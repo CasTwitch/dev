@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vote Counter with Pie Chart + Gradient Colors</title>
+  <title>Vote Counter with Pie Chart + Gradient Colors Transparent BG</title>
   <style>
     body {
       background-color: #007F5F; /* key green */
@@ -13,7 +13,7 @@
     }
     .bar-container {
       width: 100%;
-      background: #004933;
+      /* background: transparent; */ /* Removed background */
       margin: 10px 0;
       height: 30px;
       position: relative;
@@ -26,16 +26,16 @@
       transition: width 0.3s ease;
     }
     .red {
-      background: linear-gradient(90deg, #ff4e42, #a3100e);
+      background: linear-gradient(90deg, #ff7a75, #a3100e);
     }
     .blue {
-      background: linear-gradient(90deg, #42a1ff, #003c8f);
+      background: linear-gradient(90deg, #79baff, #003c8f);
     }
     .green {
-      background: linear-gradient(90deg, #42ff7a, #006600);
+      background: linear-gradient(90deg, #7eff9a, #006600);
     }
     .yellow {
-      background: linear-gradient(90deg, #fff45c, #a38600);
+      background: linear-gradient(90deg, #fffeb1, #a38600);
     }
     .label {
       position: absolute;
@@ -48,7 +48,7 @@
       width: 300px !important;
       height: 300px !important;
       margin-top: 40px;
-      background: #004933;  /* match bar container background */
+      background: transparent;  /* Transparent background */
       border-radius: 10px;
       padding: 10px;
       display: block;
@@ -86,7 +86,6 @@
 
     const ctx = document.getElementById("votePieChart").getContext("2d");
 
-    // Create gradient fills for pie slices
     const createGradient = (ctx, colorStops) => {
       const gradient = ctx.createRadialGradient(150, 150, 20, 150, 150, 150);
       colorStops.forEach(stop => {

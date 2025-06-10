@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Twitch Vote Counter with Pie Chart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vote Counter with Pie Chart</title>
   <style>
     .bar-container {
       width: 100%;
@@ -26,15 +26,15 @@
       color: white;
       font-weight: bold;
     }
-    #chartContainer {
-      width: 400px;
-      margin-top: 50px;
+    #votePieChart {
+      width: 400px !important;
+      height: 400px !important;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Bar graph -->
   <div class="bar-container">
     <div class="bar red" id="barRed" style="width: 0%"></div>
     <div class="label">🇨🇦/🇺🇸 CAN/U.S.: <span id="labelRed">0 (0%)</span></div>
@@ -52,32 +52,27 @@
     <div class="label">🇪🇺 Euro: <span id="labelYellow">0 (0%)</span></div>
   </div>
 
-  <!-- Pie chart -->
-  <div id="chartContainer">
-    <canvas id="votePieChart"></canvas>
-  </div>
+  <canvas id="votePieChart"></canvas>
 
-  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     let countRed = 0, countBlue = 0, countGreen = 0, countYellow = 0;
 
-    const pieChart = new Chart(document.getElementById("votePieChart"), {
+    const ctx = document.getElementById("votePieChart").getContext("2d");
+    const pieChart = new Chart(ctx, {
       type: "pie",
       data: {
         labels: ["CAN/U.S.", "AUS/NZ", "U.K.", "Euro"],
         datasets: [{
           data: [0, 0, 0, 0],
-          backgroundColor: ["red", "blue", "green", "gold"]
+          backgroundColor: ["red", "blue", "green", "gold"],
         }]
       },
       options: {
         responsive: true,
         plugins: {
-          legend: {
-            position: "bottom"
-          }
+          legend: { position: "bottom" }
         }
       }
     });
@@ -98,23 +93,17 @@
       document.getElementById("barYellow").style.width = percent(countYellow) + "%";
       document.getElementById("labelYellow").textContent = `${countYellow} (${percent(countYellow)}%)`;
 
-      // Update pie chart
       pieChart.data.datasets[0].data = [countRed, countBlue, countGreen, countYellow];
       pieChart.update();
     }
 
     ComfyJS.onCommand = (user, command) => {
-      switch (command.toLowerCase()) {
-        case "votered":
-          countRed++; break;
-        case "voteblue":
-          countBlue++; break;
-        case "votegreen":
-          countGreen++; break;
-        case "voteyellow":
-          countYellow++; break;
-        default:
-          return;
+      switch(command.toLowerCase()) {
+        case "votered": countRed++; break;
+        case "voteblue": countBlue++; break;
+        case "votegreen": countGreen++; break;
+        case "voteyellow": countYellow++; break;
+        default: return;
       }
       updateBars();
     };

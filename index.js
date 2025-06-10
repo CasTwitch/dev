@@ -16,7 +16,6 @@ document.getElementById("increaseBtn").onclick = function(){
         if( command === "test" ) {
     count+=1;
     document.getElementById("countLabel").innerHTML = count()
-          console.log( "!test JS was typed in chat" );
         }
     }
         

@@ -1,19 +1,23 @@
+<!-- Bar chart (already present) -->
 <div class="bar-container">
   <div class="bar red" id="barRed"></div>
   <div class="label">🇨🇦/🇺🇸 CAN/U.S.: <span id="labelRed">0 (0%)</span></div>
 </div>
-
 <div class="bar-container">
   <div class="bar blue" id="barBlue"></div>
   <div class="label">🇦🇺/🇳🇿 AUS/NZ: <span id="labelBlue">0 (0%)</span></div>
 </div>
-
 <div class="bar-container">
   <div class="bar green" id="barGreen"></div>
   <div class="label">🇬🇧 U.K.: <span id="labelGreen">0 (0%)</span></div>
 </div>
-
 <div class="bar-container">
   <div class="bar yellow" id="barYellow"></div>
   <div class="label">🇪🇺 Euro: <span id="labelYellow">0 (0%)</span></div>
 </div>
+
+<!-- Pie chart -->
+<canvas id="votePieChart" width="300" height="300" style="margin-top: 40px;"></canvas>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

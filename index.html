@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vote Counter with Pie Chart</title>
+  <title>Vote Counter with Pie Chart + Flags</title>
   <style>
     body {
       background-color: #007F5F; /* key green */
-      color: white; /* text color for readability */
+      color: white;
       font-family: Arial, sans-serif;
       padding: 20px;
     }
     .bar-container {
       width: 100%;
-      background: #004933; /* darker green for contrast */
+      background: #004933;
       margin: 10px 0;
       height: 30px;
       position: relative;
@@ -46,6 +46,10 @@
       margin-left: auto;
       margin-right: auto;
     }
+    /* Legend text color */
+    .chartjs-render-monitor + .chartjs-legend ul li span {
+      color: black !important;
+    }
   </style>
 </head>
 <body>
@@ -71,6 +75,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
   <script>
     let countRed = 0, countBlue = 0, countGreen = 0, countYellow = 0;
 
@@ -78,7 +83,12 @@
     const pieChart = new Chart(ctx, {
       type: "pie",
       data: {
-        labels: ["CAN/U.S.", "AUS/NZ", "U.K.", "Euro"],
+        labels: [
+          "🇨🇦/🇺🇸 CAN/U.S.",
+          "🇦🇺/🇳🇿 AUS/NZ",
+          "🇬🇧 U.K.",
+          "🇪🇺 Euro"
+        ],
         datasets: [{
           data: [0, 0, 0, 0],
           backgroundColor: ["red", "blue", "green", "gold"],
@@ -87,9 +97,29 @@
       options: {
         responsive: true,
         plugins: {
-          legend: { position: "bottom", labels: {color: "#000"} }
+          legend: {
+            position: "bottom",
+            labels: {
+              color: "black",
+              font: { size: 14 }
+            }
+          },
+          datalabels: {
+            color: 'white',
+            formatter: (value, ctx) => {
+              let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+              if (sum === 0) return "";
+              let percentage = (value * 100 / sum).toFixed(1) + "%";
+              return percentage;
+            },
+            font: {
+              weight: 'bold',
+              size: 16
+            }
+          }
         }
-      }
+      },
+      plugins: [ChartDataLabels]
     });
 
     function updateBars() {

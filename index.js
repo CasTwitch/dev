@@ -13,7 +13,7 @@ document.getElementById("increaseBtn").onclick = function(){
 }
 
  ComfyJS.onCommand = ( user, command, message, extra ) => {
-        if( command === "test" ) {
+        if( command === "test" ) 
     count+=1;
 
         }

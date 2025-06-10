@@ -22,9 +22,9 @@ function updateBars() {
 
 async function sendVoteToSheet(username, vote) {
   try {
-    const response = await fetch(scriptURL, {
+    await fetch(scriptURL, {
       method: 'POST',
-      mode: 'no-cors', // because Google Apps Script doesn’t send CORS headers
+      mode: 'no-cors', // Google Apps Script does not send CORS headers
       headers: {
         'Content-Type': 'application/json'
       },
@@ -33,7 +33,6 @@ async function sendVoteToSheet(username, vote) {
         vote: vote
       })
     });
-    // no-cors means you cannot read response data here, but that’s okay
   } catch (error) {
     console.error('Error sending vote:', error);
   }
@@ -41,6 +40,8 @@ async function sendVoteToSheet(username, vote) {
 
 ComfyJS.onCommand = (user, command) => {
   command = command.toLowerCase();
+
+  console.log(`Received command from ${user}: ${command}`);  // <<<<< HERE
 
   switch (command) {
     case "votered":

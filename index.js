@@ -15,7 +15,7 @@ document.getElementById("increaseBtn").onclick = function(){
  ComfyJS.onCommand = ( user, command, message, extra ) => {
         if( command === "test" ) {
     count+=1;
-    document.getElementById("countLabel").innerHTML = count()}
+    document.getElementById("countLabel").innerHTML = count()}}
 
              ComfyJS.onCommand = ( user, command, message, extra ) => {
         if( command === "reset" ) {

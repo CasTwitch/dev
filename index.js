@@ -1,37 +1,37 @@
-let count1 = 0;
-let count2 = 0;
-let count3 = 0;
-let count4 = 0;
+let countRed = 0;
+let countBlue = 0;
+let countGreen = 0;
+let countYellow = 0;
 
 function updateBars() {
-  const total = count1 + count2 + count3 + count4 || 1; // prevent divide by 0
+  const total = countRed + countBlue + countGreen + countYellow || 1;
 
-  document.getElementById("bar1").style.width = (count1 / total) * 100 + "%";
-  document.getElementById("label1").textContent = `Test1: ${count1}`;
+  document.getElementById("barRed").style.width = (countRed / total) * 100 + "%";
+  document.getElementById("labelRed").textContent = `🔴 Red: ${countRed}`;
 
-  document.getElementById("bar2").style.width = (count2 / total) * 100 + "%";
-  document.getElementById("label2").textContent = `Test2: ${count2}`;
+  document.getElementById("barBlue").style.width = (countBlue / total) * 100 + "%";
+  document.getElementById("labelBlue").textContent = `🔵 Blue: ${countBlue}`;
 
-  document.getElementById("bar3").style.width = (count3 / total) * 100 + "%";
-  document.getElementById("label3").textContent = `Test3: ${count3}`;
+  document.getElementById("barGreen").style.width = (countGreen / total) * 100 + "%";
+  document.getElementById("labelGreen").textContent = `🟢 Green: ${countGreen}`;
 
-  document.getElementById("bar4").style.width = (count4 / total) * 100 + "%";
-  document.getElementById("label4").textContent = `Test4: ${count4}`;
+  document.getElementById("barYellow").style.width = (countYellow / total) * 100 + "%";
+  document.getElementById("labelYellow").textContent = `🟡 Yellow: ${countYellow}`;
 }
 
 ComfyJS.onCommand = (user, command) => {
-  switch (command) {
-    case "test1":
-      count1++;
+  switch (command.toLowerCase()) {
+    case "votered":
+      countRed++;
       break;
-    case "test2":
-      count2++;
+    case "voteblue":
+      countBlue++;
       break;
-    case "test3":
-      count3++;
+    case "votegreen":
+      countGreen++;
       break;
-    case "test4":
-      count4++;
+    case "voteyellow":
+      countYellow++;
       break;
     default:
       return;
@@ -40,4 +40,3 @@ ComfyJS.onCommand = (user, command) => {
 };
 
 ComfyJS.Init("casthekingofawesomeness", null, ["Castheking02", "Djzandr", "casthekingofawesomeness"]);
-

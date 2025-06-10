@@ -2,64 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multi-Counter with Bars</title>
+  <title>Twitch Vote Counter</title>
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-    }
-
     .bar-container {
       width: 100%;
-      background-color: #eee;
-      border-radius: 5px;
+      background-color: #ddd;
       margin: 10px 0;
       height: 30px;
+      border-radius: 5px;
+      overflow: hidden;
       position: relative;
     }
 
-    .bar-fill {
+    .bar {
       height: 100%;
-      background-color: #4caf50;
-      border-radius: 5px 0 0 5px;
       width: 0%;
       transition: width 0.3s ease;
     }
 
-    .bar-label {
+    .bar.red { background-color: #e74c3c; }
+    .bar.blue { background-color: #3498db; }
+    .bar.green { background-color: #2ecc71; }
+    .bar.yellow { background-color: #f1c40f; }
+
+    .label {
       position: absolute;
       left: 10px;
-      top: 4px;
-      color: white;
+      top: 5px;
       font-weight: bold;
-      text-shadow: 1px 1px 2px black;
+      color: #fff;
+      text-shadow: 1px 1px 3px black;
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
 </head>
 <body>
-  <h2>Chat Vote Bars</h2>
+  <h2>Twitch Voting</h2>
 
   <div class="bar-container">
-    <div class="bar-fill" id="bar1"></div>
-    <div class="bar-label" id="label1">Test1: 0</div>
+    <div class="bar red" id="barRed"></div>
+    <div class="label" id="labelRed">🔴 Red: 0</div>
   </div>
 
   <div class="bar-container">
-    <div class="bar-fill" id="bar2"></div>
-    <div class="bar-label" id="label2">Test2: 0</div>
+    <div class="bar blue" id="barBlue"></div>
+    <div class="label" id="labelBlue">🔵 Blue: 0</div>
   </div>
 
   <div class="bar-container">
-    <div class="bar-fill" id="bar3"></div>
-    <div class="bar-label" id="label3">Test3: 0</div>
+    <div class="bar green" id="barGreen"></div>
+    <div class="label" id="labelGreen">🟢 Green: 0</div>
   </div>
 
   <div class="bar-container">
-    <div class="bar-fill" id="bar4"></div>
-    <div class="bar-label" id="label4">Test4: 0</div>
+    <div class="bar yellow" id="barYellow"></div>
+    <div class="label" id="labelYellow">🟡 Yellow: 0</div>
   </div>
 
   <script src="index.js"></script>

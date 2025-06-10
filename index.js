@@ -6,17 +6,19 @@ let countYellow = 0;
 function updateBars() {
   const total = countRed + countBlue + countGreen + countYellow || 1;
 
-  document.getElementById("barRed").style.width = (countRed / total) * 100 + "%";
-  document.getElementById("labelRed").textContent = `🔴 Red: ${countRed}`;
+  const percent = (count) => Math.round((count / total) * 100);
 
-  document.getElementById("barBlue").style.width = (countBlue / total) * 100 + "%";
-  document.getElementById("labelBlue").textContent = `🔵 Blue: ${countBlue}`;
+  document.getElementById("barRed").style.width = percent(countRed) + "%";
+  document.getElementById("labelRed").textContent = `🇨🇦/🇺🇸 CAN/U.S.: ${countRed} (${percent(countRed)}%)`;
 
-  document.getElementById("barGreen").style.width = (countGreen / total) * 100 + "%";
-  document.getElementById("labelGreen").textContent = `🟢 Green: ${countGreen}`;
+  document.getElementById("barBlue").style.width = percent(countBlue) + "%";
+  document.getElementById("labelBlue").textContent = `🇦🇺/🇳🇿 AUS/NZ: ${countBlue} (${percent(countBlue)}%)`;
 
-  document.getElementById("barYellow").style.width = (countYellow / total) * 100 + "%";
-  document.getElementById("labelYellow").textContent = `🟡 Yellow: ${countYellow}`;
+  document.getElementById("barGreen").style.width = percent(countGreen) + "%";
+  document.getElementById("labelGreen").textContent = `🇬🇧 U.K.: ${countGreen} (${percent(countGreen)}%)`;
+
+  document.getElementById("barYellow").style.width = percent(countYellow) + "%";
+  document.getElementById("labelYellow").textContent = `🇪🇺 Euro: ${countYellow} (${percent(countYellow)}%)`;
 }
 
 ComfyJS.onCommand = (user, command) => {

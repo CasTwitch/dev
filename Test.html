@@ -4,8 +4,8 @@
   </head>
   <body>
     <script type="text/javascript">
-      ComfyJS.onCommand = ( user, command, message, flags, extra ) => {
-        if( flags.customReward && command === "test" ) {
+      ComfyJS.onCommand = ( user, command, message, extra ) => {
+        if( command === "test" ) {
           console.log( "!test was typed in chat" );
         }
       }

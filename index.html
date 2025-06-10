@@ -5,15 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Vote Counter with Pie Chart</title>
   <style>
+    body {
+      background-color: #007F5F; /* key green */
+      color: white; /* text color for readability */
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
     .bar-container {
       width: 100%;
-      background: #eee;
+      background: #004933; /* darker green for contrast */
       margin: 10px 0;
       height: 30px;
       position: relative;
+      border-radius: 5px;
+      overflow: hidden;
     }
     .bar {
       height: 100%;
+      border-radius: 5px 0 0 5px;
     }
     .red { background: red; }
     .blue { background: blue; }
@@ -23,13 +32,19 @@
       position: absolute;
       top: 4px;
       left: 10px;
-      color: white;
       font-weight: bold;
+      text-shadow: 1px 1px 2px black;
     }
     #votePieChart {
       width: 400px !important;
       height: 400px !important;
       margin-top: 40px;
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
@@ -72,7 +87,7 @@
       options: {
         responsive: true,
         plugins: {
-          legend: { position: "bottom" }
+          legend: { position: "bottom", labels: {color: "#000"} }
         }
       }
     });

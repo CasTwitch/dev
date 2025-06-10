@@ -1,65 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Twitch Voting</title>
-  <style>
-    .bar-container {
-      width: 100%;
-      background-color: #ddd;
-      margin: 10px 0;
-      height: 30px;
-      border-radius: 5px;
-      overflow: hidden;
-      position: relative;
-    }
+<div class="bar-container">
+  <div class="bar red" id="barRed"></div>
+  <div class="label">🇨🇦/🇺🇸 CAN/U.S.: <span id="labelRed">0 (0%)</span></div>
+</div>
 
-    .bar {
-      height: 100%;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
+<div class="bar-container">
+  <div class="bar blue" id="barBlue"></div>
+  <div class="label">🇦🇺/🇳🇿 AUS/NZ: <span id="labelBlue">0 (0%)</span></div>
+</div>
 
-    .bar.red { background-color: #e74c3c; }
-    .bar.blue { background-color: #3498db; }
-    .bar.green { background-color: #2ecc71; }
-    .bar.yellow { background-color: #f1c40f; }
+<div class="bar-container">
+  <div class="bar green" id="barGreen"></div>
+  <div class="label">🇬🇧 U.K.: <span id="labelGreen">0 (0%)</span></div>
+</div>
 
-    .label {
-      position: absolute;
-      left: 10px;
-      top: 5px;
-      font-weight: bold;
-      color: #fff;
-      text-shadow: 1px 1px 3px black;
-    }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
-</head>
-<body>
-  <h2>Twitch Voting</h2>
-
-  <div class="bar-container">
-    <div class="bar red" id="barRed"></div>
-    <div class="label" id="labelRed">🇨🇦/🇺🇸 CAN/U.S.: 0 (0%)</div>
-  </div>
-
-  <div class="bar-container">
-    <div class="bar blue" id="barBlue"></div>
-    <div class="label" id="labelBlue">🇦🇺/🇳🇿 AUS/NZ: 0 (0%)</div>
-  </div>
-
-  <div class="bar-container">
-    <div class="bar green" id="barGreen"></div>
-    <div class="label" id="labelGreen">🇬🇧 U.K.: 0 (0%)</div>
-  </div>
-
-  <div class="bar-container">
-    <div class="bar yellow" id="barYellow"></div>
-    <div class="label" id="labelYellow">🇪🇺 Euro: 0 (0%)</div>
-  </div>
-
-  <script src="index.js"></script>
-</body>
-</html>
+<div class="bar-container">
+  <div class="bar yellow" id="barYellow"></div>
+  <div class="label">🇪🇺 Euro: <span id="labelYellow">0 (0%)</span></div>
+</div>

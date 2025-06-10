@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vote Counter with Pie Chart + Flags</title>
+  <title>Vote Counter with Pie Chart + Gradient Colors</title>
   <style>
     body {
       background-color: #007F5F; /* key green */
@@ -23,11 +23,20 @@
     .bar {
       height: 100%;
       border-radius: 5px 0 0 5px;
+      transition: width 0.3s ease;
     }
-    .red { background: red; }
-    .blue { background: blue; }
-    .green { background: green; }
-    .yellow { background: gold; }
+    .red {
+      background: linear-gradient(90deg, #ff4e42, #a3100e);
+    }
+    .blue {
+      background: linear-gradient(90deg, #42a1ff, #003c8f);
+    }
+    .green {
+      background: linear-gradient(90deg, #42ff7a, #006600);
+    }
+    .yellow {
+      background: linear-gradient(90deg, #fff45c, #a38600);
+    }
     .label {
       position: absolute;
       top: 4px;
@@ -45,10 +54,6 @@
       display: block;
       margin-left: auto;
       margin-right: auto;
-    }
-    /* Legend text color */
-    .chartjs-render-monitor + .chartjs-legend ul li span {
-      color: black !important;
     }
   </style>
 </head>
@@ -75,4 +80,119 @@
 
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <script>
+    let countRed = 0, countBlue = 0, countGreen = 0, countYellow = 0;
+
+    const ctx = document.getElementById("votePieChart").getContext("2d");
+
+    // Create gradient fills for pie slices
+    const createGradient = (ctx, colorStops) => {
+      const gradient = ctx.createRadialGradient(150, 150, 20, 150, 150, 150);
+      colorStops.forEach(stop => {
+        gradient.addColorStop(stop.offset, stop.color);
+      });
+      return gradient;
+    };
+
+    const gradients = {
+      red: createGradient(ctx, [
+        { offset: 0, color: '#ff7a75' },
+        { offset: 1, color: '#a3100e' }
+      ]),
+      blue: createGradient(ctx, [
+        { offset: 0, color: '#79baff' },
+        { offset: 1, color: '#003c8f' }
+      ]),
+      green: createGradient(ctx, [
+        { offset: 0, color: '#7eff9a' },
+        { offset: 1, color: '#006600' }
+      ]),
+      yellow: createGradient(ctx, [
+        { offset: 0, color: '#fffeb1' },
+        { offset: 1, color: '#a38600' }
+      ]),
+    };
+
+    const pieChart = new Chart(ctx, {
+      type: "pie",
+      data: {
+        labels: [
+          "🇨🇦/🇺🇸 CAN/U.S.",
+          "🇦🇺/🇳🇿 AUS/NZ",
+          "🇬🇧 U.K.",
+          "🇪🇺 Euro"
+        ],
+        datasets: [{
+          data: [0, 0, 0, 0],
+          backgroundColor: [
+            gradients.red,
+            gradients.blue,
+            gradients.green,
+            gradients.yellow
+          ],
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: {
+              color: "black",
+              font: { size: 14 }
+            }
+          },
+          datalabels: {
+            color: 'white',
+            formatter: (value, ctx) => {
+              let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+              if (sum === 0) return "";
+              let percentage = (value * 100 / sum).toFixed(1) + "%";
+              return percentage;
+            },
+            font: {
+              weight: 'bold',
+              size: 16
+            }
+          }
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
+
+    function updateBars() {
+      const total = countRed + countBlue + countGreen + countYellow || 1;
+      const percent = (count) => Math.round((count / total) * 100);
+
+      document.getElementById("barRed").style.width = percent(countRed) + "%";
+      document.getElementById("labelRed").textContent = `${countRed} (${percent(countRed)}%)`;
+
+      document.getElementById("barBlue").style.width = percent(countBlue) + "%";
+      document.getElementById("labelBlue").textContent = `${countBlue} (${percent(countBlue)}%)`;
+
+      document.getElementById("barGreen").style.width = percent(countGreen) + "%";
+      document.getElementById("labelGreen").textContent = `${countGreen} (${percent(countGreen)}%)`;
+
+      document.getElementById("barYellow").style.width = percent(countYellow) + "%";
+      document.getElementById("labelYellow").textContent = `${countYellow} (${percent(countYellow)}%)`;
+
+      pieChart.data.datasets[0].data = [countRed, countBlue, countGreen, countYellow];
+      pieChart.update();
+    }
+
+    ComfyJS.onCommand = (user, command) => {
+      switch(command.toLowerCase()) {
+        case "votered": countRed++; break;
+        case "voteblue": countBlue++; break;
+        case "votegreen": countGreen++; break;
+        case "voteyellow": countYellow++; break;
+        default: return;
+      }
+      updateBars();
+    };
+
+    ComfyJS.Init("casthekingofawesomeness", null, ["Castheking02", "Djzandr", "casthekingofawesomeness"]);
+  </script>
+</body>
+</html>

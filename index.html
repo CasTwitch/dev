@@ -2,209 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vote Counter with Pie Chart + Flags</title>
+  <title>Vote Tracker</title>
   <style>
-    body {
-      background-color: #007F5F; /* key green */
-      color: white;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    .bar-container {
-      width: 100%;
-      background: transparent;
-      margin: 10px 0;
-      height: 30px;
-      position: relative;
-      border-radius: 5px;
-      overflow: hidden;
-    }
     .bar {
-      height: 100%;
-      border-radius: 5px 0 0 5px;
+      height: 30px;
+      background: linear-gradient(90deg, #ff4d4d, #cc0000);
+      margin-bottom: 10px;
+      width: 0;
+      transition: width 0.5s ease;
     }
-    .label {
-      position: absolute;
-      top: 4px;
-      left: 10px;
-      font-weight: bold;
-      text-shadow: 1px 1px 2px black;
-    }
-    #votePieChart {
-      width: 350px !important;
-      height: 350px !important;
-      margin-top: 40px;
-      background: transparent;
-      border-radius: 10px;
-      padding: 10px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #pieText {
-      text-align: center;
-      color: black;
-      font-weight: bold;
-      margin-top: 10px;
-      font-size: 18px;
-    }
+    #barBlue { background: linear-gradient(90deg, #4d79ff, #0033cc); }
+    #barGreen { background: linear-gradient(90deg, #4dff88, #009933); }
+    #barYellow { background: linear-gradient(90deg, #ffff66, #cccc00); }
   </style>
 </head>
 <body>
+  <h1>Vote Tracker</h1>
 
-  <div class="bar-container">
-    <div class="bar" id="barRed" style="width: 0%"></div>
-    <div class="label">🇨🇦/🇺🇸 CAN/U.S.: <span id="labelRed">0 (0%)</span></div>
-  </div>
-  <div class="bar-container">
-    <div class="bar" id="barBlue" style="width: 0%"></div>
-    <div class="label">🇦🇺/🇳🇿 AUS/NZ: <span id="labelBlue">0 (0%)</span></div>
-  </div>
-  <div class="bar-container">
-    <div class="bar" id="barGreen" style="width: 0%"></div>
-    <div class="label">🇬🇧 U.K.: <span id="labelGreen">0 (0%)</span></div>
-  </div>
-  <div class="bar-container">
-    <div class="bar" id="barYellow" style="width: 0%"></div>
-    <div class="label">🇪🇺 Euro: <span id="labelYellow">0 (0%)</span></div>
+  <div>
+    <div>Red: <span id="labelRed">0 (0%)</span></div>
+    <div id="barRed" class="bar"></div>
   </div>
 
-  <canvas id="votePieChart"></canvas>
-  <div id="pieText">Total votes: 0</div>
+  <div>
+    <div>Blue: <span id="labelBlue">0 (0%)</span></div>
+    <div id="barBlue" class="bar"></div>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
-  <script>
-    let countRed = 0, countBlue = 0, countGreen = 0, countYellow = 0;
+  <div>
+    <div>Green: <span id="labelGreen">0 (0%)</span></div>
+    <div id="barGreen" class="bar"></div>
+  </div>
 
-    // Create gradients for bars
-    function createGradient(ctx, colorStart, colorEnd) {
-      const gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
-      gradient.addColorStop(0, colorStart);
-      gradient.addColorStop(1, colorEnd);
-      return gradient;
-    }
+  <div>
+    <div>Yellow: <span id="labelYellow">0 (0%)</span></div>
+    <div id="barYellow" class="bar"></div>
+  </div>
 
-    const ctx = document.getElementById("votePieChart").getContext("2d");
-
-    // We'll create gradients for pie slices too
-    const gradientRed = createGradient(ctx, '#ff4e42', '#b22222'); // red shades
-    const gradientBlue = createGradient(ctx, '#4e85ff', '#2233b2'); // blue shades
-    const gradientGreen = createGradient(ctx, '#42ff7c', '#22994a'); // green shades
-    const gradientYellow = createGradient(ctx, '#ffea42', '#b2a222'); // yellow shades
-
-    const pieChart = new Chart(ctx, {
-      type: "pie",
-      data: {
-        labels: [
-          "🇨🇦/🇺🇸 CAN/U.S.",
-          "🇦🇺/🇳🇿 AUS/NZ",
-          "🇬🇧 U.K.",
-          "🇪🇺 Euro"
-        ],
-        datasets: [{
-          data: [0, 0, 0, 0],
-          backgroundColor: [
-            gradientRed,
-            gradientBlue,
-            gradientGreen,
-            gradientYellow
-          ],
-          borderColor: '#007F5F',
-          borderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false
-          },
-          datalabels: {
-            color: 'white',
-            font: {
-              weight: 'bold',
-              size: 16
-            },
-            formatter: (value, ctx) => {
-              let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-              if (sum === 0) return "";
-              return ((value / sum) * 100).toFixed(1) + "%";
-            },
-            // Shadow effect on labels
-            textShadowColor: 'rgba(0,0,0,0.7)',
-            textShadowBlur: 3,
-            textShadowOffsetX: 1,
-            textShadowOffsetY: 1,
-          }
-        }
-      },
-      plugins: [ChartDataLabels]
-    });
-
-    function updateBars() {
-      const total = countRed + countBlue + countGreen + countYellow || 1;
-      const percent = (count) => Math.round((count / total) * 100);
-
-      // Update horizontal bars with gradient fills dynamically
-      const barRed = document.getElementById("barRed");
-      const barBlue = document.getElementById("barBlue");
-      const barGreen = document.getElementById("barGreen");
-      const barYellow = document.getElementById("barYellow");
-
-      // Create gradients for bars individually (width changes so recreate each time)
-      function barGradient(bar, colorStart, colorEnd) {
-        const canvas = document.createElement('canvas');
-        canvas.width = 300; // arbitrary width for gradient
-        canvas.height = 30;
-        const ctx = canvas.getContext('2d');
-        const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
-        grad.addColorStop(0, colorStart);
-        grad.addColorStop(1, colorEnd);
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        return grad;
-      }
-
-      // Instead of canvas gradient, use CSS linear-gradient for performance & simplicity:
-      barRed.style.background = `linear-gradient(to right, #ff4e42, #b22222)`;
-      barRed.style.width = percent(countRed) + "%";
-      document.getElementById("labelRed").textContent = `${countRed} (${percent(countRed)}%)`;
-
-      barBlue.style.background = `linear-gradient(to right, #4e85ff, #2233b2)`;
-      barBlue.style.width = percent(countBlue) + "%";
-      document.getElementById("labelBlue").textContent = `${countBlue} (${percent(countBlue)}%)`;
-
-      barGreen.style.background = `linear-gradient(to right, #42ff7c, #22994a)`;
-      barGreen.style.width = percent(countGreen) + "%";
-      document.getElementById("labelGreen").textContent = `${countGreen} (${percent(countGreen)}%)`;
-
-      barYellow.style.background = `linear-gradient(to right, #ffea42, #b2a222)`;
-      barYellow.style.width = percent(countYellow) + "%";
-      document.getElementById("labelYellow").textContent = `${countYellow} (${percent(countYellow)}%)`;
-
-      // Update pie chart data & redraw
-      pieChart.data.datasets[0].data = [countRed, countBlue, countGreen, countYellow];
-      pieChart.update();
-
-      // Update total votes below pie chart
-      document.getElementById("pieText").textContent = `Total votes: ${total}`;
-    }
-
-    ComfyJS.onCommand = (user, command) => {
-      switch(command.toLowerCase()) {
-        case "votered": countRed++; break;
-        case "voteblue": countBlue++; break;
-        case "votegreen": countGreen++; break;
-        case "voteyellow": countYellow++; break;
-        default: return;
-      }
-      updateBars();
-    };
-
-    ComfyJS.Init("casthekingofawesomeness", null, ["Castheking02", "Djzandr", "casthekingofawesomeness"]);
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/comfy.js"></script>
+  <script src="index.js"></script>
 </body>
 </html>

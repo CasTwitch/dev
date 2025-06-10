@@ -12,13 +12,12 @@ document.getElementById("increaseBtn").onclick = function(){
     document.getElementById("countLabel").innerHTML = count;
 }
 
- ComfyJS.onCommand = ( user, command, message, extra ) => {
-        if( command === "test" ) {
-    count+=1;
-    document.getElementById("countLabel").innerHTML = count()
-          console.log( "!test JS was typed in chat" );
-        }
+ ComfyJS.onCommand = (user, command, message, extra) => {
+    if (command === "test") {
+        count += 1;
+        document.getElementById("countLabel").innerHTML = count;
+        console.log("!test JS was typed in chat by", user);
     }
-        
+};
       
      ComfyJS.Init( "casthekingofawesomeness", null, [ "Castheking02", "Djzandr", "casthekingofawesomeness" ] );

@@ -1,4 +1,4 @@
-const scriptURL = "https://docs.google.com/spreadsheets/d/1qhlbDr57GYGF1KvEyN5Dz7mJUqi1yICSEEm9ootTaLg/edit?gid=0#gid=0"; // Replace with your real one
+const scriptURL = "https://script.google.com/macros/s/AKfycbzQpEgSHGmkju9skS5m-BFOAzXUkU30312bWtTYtR8q98mOtqOx8OEDULsPt3ygGgPF3A/exec"; // Replace with your real one
 
 async function sendVoteToSheet(username, vote) {
   try {

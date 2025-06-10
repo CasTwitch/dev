@@ -36,10 +36,10 @@
       text-shadow: 1px 1px 2px black;
     }
     #votePieChart {
-      width: 400px !important;
-      height: 400px !important;
+      width: 300px !important;
+      height: 300px !important;
       margin-top: 40px;
-      background: white;
+      background: #004933;  /* match bar container background */
       border-radius: 10px;
       padding: 10px;
       display: block;
@@ -75,85 +75,4 @@
 
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
-  <script>
-    let countRed = 0, countBlue = 0, countGreen = 0, countYellow = 0;
-
-    const ctx = document.getElementById("votePieChart").getContext("2d");
-    const pieChart = new Chart(ctx, {
-      type: "pie",
-      data: {
-        labels: [
-          "🇨🇦/🇺🇸 CAN/U.S.",
-          "🇦🇺/🇳🇿 AUS/NZ",
-          "🇬🇧 U.K.",
-          "🇪🇺 Euro"
-        ],
-        datasets: [{
-          data: [0, 0, 0, 0],
-          backgroundColor: ["red", "blue", "green", "gold"],
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: "bottom",
-            labels: {
-              color: "black",
-              font: { size: 14 }
-            }
-          },
-          datalabels: {
-            color: 'white',
-            formatter: (value, ctx) => {
-              let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-              if (sum === 0) return "";
-              let percentage = (value * 100 / sum).toFixed(1) + "%";
-              return percentage;
-            },
-            font: {
-              weight: 'bold',
-              size: 16
-            }
-          }
-        }
-      },
-      plugins: [ChartDataLabels]
-    });
-
-    function updateBars() {
-      const total = countRed + countBlue + countGreen + countYellow || 1;
-      const percent = (count) => Math.round((count / total) * 100);
-
-      document.getElementById("barRed").style.width = percent(countRed) + "%";
-      document.getElementById("labelRed").textContent = `${countRed} (${percent(countRed)}%)`;
-
-      document.getElementById("barBlue").style.width = percent(countBlue) + "%";
-      document.getElementById("labelBlue").textContent = `${countBlue} (${percent(countBlue)}%)`;
-
-      document.getElementById("barGreen").style.width = percent(countGreen) + "%";
-      document.getElementById("labelGreen").textContent = `${countGreen} (${percent(countGreen)}%)`;
-
-      document.getElementById("barYellow").style.width = percent(countYellow) + "%";
-      document.getElementById("labelYellow").textContent = `${countYellow} (${percent(countYellow)}%)`;
-
-      pieChart.data.datasets[0].data = [countRed, countBlue, countGreen, countYellow];
-      pieChart.update();
-    }
-
-    ComfyJS.onCommand = (user, command) => {
-      switch(command.toLowerCase()) {
-        case "votered": countRed++; break;
-        case "voteblue": countBlue++; break;
-        case "votegreen": countGreen++; break;
-        case "voteyellow": countYellow++; break;
-        default: return;
-      }
-      updateBars();
-    };
-
-    ComfyJS.Init("casthekingofawesomeness", null, ["Castheking02", "Djzandr", "casthekingofawesomeness"]);
-  </script>
-</body>
-</html>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min

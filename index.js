@@ -13,9 +13,10 @@ document.getElementById("increaseBtn").onclick = function(){
 }
 
  ComfyJS.onCommand = ( user, command, message, extra ) => {
-        if( command === "test" ) 
+        if( command === "test" ) {
     count+=1;
-
+    document.getElementById("countLabel").innerHTML = count()
+          console.log( "!test JS was typed in chat" );
         }
     }
         

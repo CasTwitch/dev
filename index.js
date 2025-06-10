@@ -1,5 +1,6 @@
 let countRed = 0, countBlue = 0, countGreen = 0, countYellow = 0;
 
+// ✅ Replace with your working Web App URL:
 const scriptURL = "https://script.google.com/macros/s/AKfycbwoNK0yVH9A02jaXYg6PwPmfvvN893WRv_QlXxU1utpYS9PzHtF7WXx6KzYoVfomWmDOA/exec";
 
 function updateBars() {
@@ -22,10 +23,9 @@ function updateBars() {
 async function sendVoteToSheet(username, vote) {
   try {
     await fetch(scriptURL, {
-      method: 'POST',
-      mode: 'no-cors',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         username: username,
@@ -33,35 +33,30 @@ async function sendVoteToSheet(username, vote) {
       })
     });
   } catch (error) {
-    console.error('Error sending vote:', error);
+    console.error("Error sending vote:", error);
   }
 }
 
 ComfyJS.onCommand = (user, command) => {
   const cmd = command.toLowerCase();
 
-  switch (cmd) {
-    case "votered":
-      countRed++;
-      sendVoteToSheet(user, "red");
-      break;
-    case "voteblue":
-      countBlue++;
-      sendVoteToSheet(user, "blue");
-      break;
-    case "votegreen":
-      countGreen++;
-      sendVoteToSheet(user, "green");
-      break;
-    case "voteyellow":
-      countYellow++;
-      sendVoteToSheet(user, "yellow");
-      break;
-    default:
-      return;
+  if (cmd === "votered") {
+    countRed++;
+    sendVoteToSheet(user, "votered");
+  } else if (cmd === "voteblue") {
+    countBlue++;
+    sendVoteToSheet(user, "voteblue");
+  } else if (cmd === "votegreen") {
+    countGreen++;
+    sendVoteToSheet(user, "votegreen");
+  } else if (cmd === "voteyellow") {
+    countYellow++;
+    sendVoteToSheet(user, "voteyellow");
+  } else {
+    return;
   }
 
   updateBars();
 };
 
-ComfyJS.Init("casthekingofawesomeness");
+ComfyJS.Init("casthekingofawesomeness", null, ["Castheking02", "Djzandr", "casthekingofawesomeness"]);

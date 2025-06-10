@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Twitch Vote Counter</title>
+  <title>Twitch Vote Counter with Pie Chart</title>
   <style>
     .bar-container {
       width: 100%;
@@ -25,6 +25,10 @@
       left: 10px;
       color: white;
       font-weight: bold;
+    }
+    #chartContainer {
+      width: 400px;
+      margin-top: 50px;
     }
   </style>
 </head>
@@ -48,10 +52,35 @@
     <div class="label">🇪🇺 Euro: <span id="labelYellow">0 (0%)</span></div>
   </div>
 
+  <!-- Pie chart -->
+  <div id="chartContainer">
+    <canvas id="votePieChart"></canvas>
+  </div>
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     let countRed = 0, countBlue = 0, countGreen = 0, countYellow = 0;
+
+    const pieChart = new Chart(document.getElementById("votePieChart"), {
+      type: "pie",
+      data: {
+        labels: ["CAN/U.S.", "AUS/NZ", "U.K.", "Euro"],
+        datasets: [{
+          data: [0, 0, 0, 0],
+          backgroundColor: ["red", "blue", "green", "gold"]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "bottom"
+          }
+        }
+      }
+    });
 
     function updateBars() {
       const total = countRed + countBlue + countGreen + countYellow || 1;
@@ -68,6 +97,10 @@
 
       document.getElementById("barYellow").style.width = percent(countYellow) + "%";
       document.getElementById("labelYellow").textContent = `${countYellow} (${percent(countYellow)}%)`;
+
+      // Update pie chart
+      pieChart.data.datasets[0].data = [countRed, countBlue, countGreen, countYellow];
+      pieChart.update();
     }
 
     ComfyJS.onCommand = (user, command) => {

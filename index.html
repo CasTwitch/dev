@@ -1,45 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Vote Tracker</title>
+  <script src="https://unpkg.com/comfy.js@latest/dist/comfy.min.js"></script>
+  <script src="index.js" defer></script>
   <style>
-    .bar {
-      height: 30px;
-      background: linear-gradient(90deg, #ff4d4d, #cc0000);
-      margin-bottom: 10px;
-      width: 0;
-      transition: width 0.5s ease;
-    }
-    #barBlue { background: linear-gradient(90deg, #4d79ff, #0033cc); }
-    #barGreen { background: linear-gradient(90deg, #4dff88, #009933); }
-    #barYellow { background: linear-gradient(90deg, #ffff66, #cccc00); }
+    .bar { height: 30px; background-color: grey; margin: 10px 0; position: relative; }
+    .fill { height: 100%; color: white; padding-left: 5px; }
+    #barRed { background-color: red; }
+    #barBlue { background-color: blue; }
+    #barGreen { background-color: green; }
+    #barYellow { background-color: gold; }
   </style>
 </head>
 <body>
-  <h1>Vote Tracker</h1>
-
-  <div>
-    <div>Red: <span id="labelRed">0 (0%)</span></div>
-    <div id="barRed" class="bar"></div>
-  </div>
-
-  <div>
-    <div>Blue: <span id="labelBlue">0 (0%)</span></div>
-    <div id="barBlue" class="bar"></div>
-  </div>
-
-  <div>
-    <div>Green: <span id="labelGreen">0 (0%)</span></div>
-    <div id="barGreen" class="bar"></div>
-  </div>
-
-  <div>
-    <div>Yellow: <span id="labelYellow">0 (0%)</span></div>
-    <div id="barYellow" class="bar"></div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/comfy.js"></script>
-  <script src="index.js"></script>
+  <div class="bar"><div id="barRed" class="fill" style="width:0%"><span id="labelRed"></span></div></div>
+  <div class="bar"><div id="barBlue" class="fill" style="width:0%"><span id="labelBlue"></span></div></div>
+  <div class="bar"><div id="barGreen" class="fill" style="width:0%"><span id="labelGreen"></span></div></div>
+  <div class="bar"><div id="barYellow" class="fill" style="width:0%"><span id="labelYellow"></span></div></div>
 </body>
 </html>

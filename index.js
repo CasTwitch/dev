@@ -1,7 +1,25 @@
-let countRed = 0;
-let countBlue = 0;
-let countGreen = 0;
-let countYellow = 0;
+// Vote counters
+let countRed = 0, countBlue = 0, countGreen = 0, countYellow = 0;
+
+// Initialise pie chart
+const ctx = document.getElementById("votePieChart").getContext("2d");
+const pieChart = new Chart(ctx, {
+  type: "pie",
+  data: {
+    labels: ["CAN/U.S.", "AUS/NZ", "U.K.", "Euro"],
+    datasets: [{
+      data: [0, 0, 0, 0],
+      backgroundColor: ["red", "blue", "green", "yellow"]
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        position: "bottom"
+      }
+    }
+  }
+});
 
 function updateBars() {
   const total = countRed + countBlue + countGreen + countYellow || 1;
@@ -18,6 +36,10 @@ function updateBars() {
 
   document.getElementById("barYellow").style.width = percent(countYellow) + "%";
   document.getElementById("labelYellow").textContent = `${countYellow} (${percent(countYellow)}%)`;
+
+  // Update pie chart data
+  pieChart.data.datasets[0].data = [countRed, countBlue, countGreen, countYellow];
+  pieChart.update();
 }
 
 ComfyJS.onCommand = (user, command) => {

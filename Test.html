@@ -3,14 +3,45 @@
     <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
   </head>
   <body>
+    
     <script type="text/javascript">
       ComfyJS.onCommand = ( user, command, message, extra ) => {
         if( command === "test" ) {
           console.log( "!test was typed in chat" );
+          let counter = document.querySelector('#counter'),
+    button = document.querySelectorAll('.button button'),
+    count = 0;
+
+button.forEach(el =>
+  el.addEventListener('click', function(event) {
+    switch (event.target.id) {
+      case 'decrease':
+        count--;
+        break;
+      case 'reset':
+        count = 0;
+        break;
+      case 'increase':
+        count++;
+        break;
+    }
+    counter.textContent = count;
+    counter.style.color = (count > 0) ? 'green' : 'red';
+  })
+)
         }
       }
      ComfyJS.Init( "casthekingofawesomeness", null, [ "Castheking02", "Djzandr", "casthekingofawesomeness" ] );
 
     </script>
+    <main>
+  <h1>My Simple Counter</h1>
+  <p id="counter">0</p>
+  <div class="button">
+    <button id="decrease">Decrease</button>
+    <button id="reset">Reset</button>
+    <button id="increase">Increase</button>
+  </div>
+</main>
   </body>
 </html>

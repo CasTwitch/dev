@@ -1,6 +1,6 @@
 let countRed = 0, countBlue = 0, countGreen = 0, countYellow = 0;
 
-// Replace this with your Google Apps Script Web App URL
+// Replace with your actual deployed Google Apps Script URL
 const scriptURL = "https://script.google.com/macros/s/AKfycbzzffTtIQu9whqwxKsZanZqI7qsDVG2jhd4lg0tqjHCk_CCJcGODlU3vzpHm_q2mZw/exec";
 
 function updateBars() {
@@ -21,10 +21,11 @@ function updateBars() {
 }
 
 async function sendVoteToSheet(username, vote) {
+  console.log("Sending vote:", username, vote);
   try {
     await fetch(scriptURL, {
       method: 'POST',
-      mode: 'no-cors', // Google Apps Script does not send CORS headers
+      mode: 'no-cors', // Google Apps Script doesn’t send CORS headers
       headers: {
         'Content-Type': 'application/json'
       },
@@ -40,8 +41,6 @@ async function sendVoteToSheet(username, vote) {
 
 ComfyJS.onCommand = (user, command) => {
   command = command.toLowerCase();
-
-  console.log(`Received command from ${user}: ${command}`);  // <<<<< HERE
 
   switch (command) {
     case "votered":
@@ -66,4 +65,5 @@ ComfyJS.onCommand = (user, command) => {
   updateBars();
 };
 
+// Initialize ComfyJS with your Twitch channel name and moderators
 ComfyJS.Init("casthekingofawesomeness", null, ["Castheking02", "Djzandr", "casthekingofawesomeness"]);

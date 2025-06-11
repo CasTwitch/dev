@@ -2,36 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Twitch Vote Viewer</title>
-  <style>
-    .bar {
-      height: 30px;
-      background-color: grey;
-      margin: 5px 0;
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-    #barRed { background-color: red; }
-    #barBlue { background-color: blue; }
-    #barGreen { background-color: green; }
-    #barYellow { background-color: yellow; }
-  </style>
+  <title>Twitch Voting</title>
 </head>
 <body>
-  <h1>Twitch Votes</h1>
-  <div>Red: <span id="labelRed">0 (0%)</span></div>
-  <div class="bar" id="barRed"></div>
+  <h1>Twitch Voting is Live</h1>
 
-  <div>Blue: <span id="labelBlue">0 (0%)</span></div>
-  <div class="bar" id="barBlue"></div>
+  <!-- Load ComfyJS -->
+  <script src="https://unpkg.com/comfy.js@latest/dist/comfy.min.js"></script>
 
-  <div>Green: <span id="labelGreen">0 (0%)</span></div>
-  <div class="bar" id="barGreen"></div>
-
-  <div>Yellow: <span id="labelYellow">0 (0%)</span></div>
-  <div class="bar" id="barYellow"></div>
-
-  <script src="https://cdn.jsdelivr.net/npm/comfy.js@1.0.5/comfy.min.js"></script>
+  <!-- Your own script that uses ComfyJS -->
   <script src="index.js"></script>
 </body>
 </html>

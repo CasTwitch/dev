@@ -26,4 +26,4 @@ ComfyJS.onCommand = (user, command) => {
   }
 };
 
-ComfyJS.Init("CasTheKingOfAwesomeness"); // Replace with your Twitch channel name
+ComfyJS.Init("casthekingofawesomeness", null, ["castheking02"]);

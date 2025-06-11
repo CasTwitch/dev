@@ -1,5 +1,5 @@
 // Your Google Apps Script Web App URL
-const scriptURL = "https://script.google.com/macros/s/AKfycbzQpEgSHGmkju9skS5m-BFOAzXUkU30312bWtTYtR8q98mOtqOx8OEDULsPt3ygGgPF3A/exec";
+const scriptURL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLgJTtvHJdV6jDLYtZgynkPgXGxnMvIui7QihnMeSIJCd6pGAqArcaNGqR08r9iaNX7vYV6gb4lHaWbIiOYZFrEwlunq0ZFR6Mtlk4-0oLdRQycARgKnUtCELqU4H3NKal2B58mZwayPfNcx-tfgLx_rBy2VlMMQ6pQ-ffiZWq9qwHERiIOA57yDfSwa1PmUWCBXGdYXWFMA_7Zwa5Ow3ETYl68t2vWu2xoGKMviQ1QVepXR1LWP3L8o1tchmcXVAQvqCS4_5bBGzQUqtavx8sGTn51xvOJG-tDgjAtd&lib=MeaYsQTwvRmx50QmXqr06QZq1e8rbxTfw";
 
 // Current vote counts
 let countRed = 0, countBlue = 0, countGreen = 0, countYellow = 0;

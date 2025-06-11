@@ -1,64 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Vote Visualization</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #111;
-    color: white;
-    max-width: 400px;
-    margin: 40px auto;
-  }
-  .bar-container {
-    margin-bottom: 15px;
-  }
-  .bar-label {
-    margin-bottom: 5px;
-  }
-  .bar {
-    height: 30px;
-    background: grey;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-  .bar-fill {
-    height: 100%;
-    width: 0;
-    transition: width 0.5s ease;
-  }
-  .votered { background: #e74c3c; }
-  .voteblue { background: #3498db; }
-  .votegreen { background: #2ecc71; }
-  .voteyellow { background: #f1c40f; color: black; }
-</style>
+  <meta charset="UTF-8" />
+  <title>Vote Visualization</title>
+  <style>
+    .bar-container {
+      margin: 10px 0;
+      width: 300px;
+      background: #ddd;
+      height: 24px;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .bar {
+      height: 100%;
+      transition: width 0.5s ease;
+    }
+    #bar-red { background: #e74c3c; }
+    #bar-blue { background: #3498db; }
+    #bar-green { background: #2ecc71; }
+    #bar-yellow { background: #f1c40f; }
+    .count {
+      position: absolute;
+      right: 8px;
+      top: 0;
+      bottom: 0;
+      line-height: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
+  <h1>Live Vote Results</h1>
 
-<h2>Current Votes</h2>
+  <div class="bar-container">
+    <div id="bar-red" class="bar"></div>
+    <div id="count-red" class="count">0</div>
+  </div>
+  <div class="bar-container">
+    <div id="bar-blue" class="bar"></div>
+    <div id="count-blue" class="count">0</div>
+  </div>
+  <div class="bar-container">
+    <div id="bar-green" class="bar"></div>
+    <div id="count-green" class="count">0</div>
+  </div>
+  <div class="bar-container">
+    <div id="bar-yellow" class="bar"></div>
+    <div id="count-yellow" class="count">0</div>
+  </div>
 
-<div id="votered" class="bar-container">
-  <div class="bar-label">Red</div>
-  <div class="bar"><div class="bar-fill votered"></div></div>
-</div>
+  <script>
+    const votesUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'; // Replace with your actual URL
 
-<div id="voteblue" class="bar-container">
-  <div class="bar-label">Blue</div>
-  <div class="bar"><div class="bar-fill voteblue"></div></div>
-</div>
+    async function fetchVotes() {
+      try {
+        const response = await fetch(votesUrl);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const votes = await response.json();
+        updateBars(votes);
+      } catch (error) {
+        console.error('Error fetching votes:', error);
+      }
+    }
 
-<div id="votegreen" class="bar-container">
-  <div class="bar-label">Green</div>
-  <div class="bar"><div class="bar-fill votegreen"></div></div>
-</div>
+    function updateBars(votes) {
+      const maxVotes = Math.max(...Object.values(votes), 1);
+      // Update bars and counts with safe fallback for missing keys
+      const keys = ['votered', 'voteblue', 'votegreen', 'voteyellow'];
+      keys.forEach(key => {
+        const count = votes[key] || 0;
+        const bar = document.getElementById('bar-' + key.slice(4)); // removes 'vote' prefix, e.g. 'red'
+        const countElem = document.getElementById('count-' + key.slice(4));
+        if (bar && countElem) {
+          bar.style.width = (count / maxVotes) * 100 + '%';
+          countElem.textContent = count;
+        }
+      });
+    }
 
-<div id="voteyellow" class="bar-container">
-  <div class="bar-label">Yellow</div>
-  <div class="bar"><div class="bar-fill voteyellow"></div></div>
-</div>
+    // Initial fetch
+    fetchVotes();
 
-<script src="viz.js"></script>
+    // Auto refresh every 10 seconds
+    setInterval(fetchVotes, 10000);
+  </script>
 </body>
 </html>

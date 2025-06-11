@@ -1,23 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Vote Tracker</title>
-  <script src="https://unpkg.com/comfy.js@latest/dist/comfy.min.js"></script>
-  <script src="index.js" defer></script>
-  <style>
-    .bar { height: 30px; background-color: grey; margin: 10px 0; position: relative; }
-    .fill { height: 100%; color: white; padding-left: 5px; }
-    #barRed { background-color: red; }
-    #barBlue { background-color: blue; }
-    #barGreen { background-color: green; }
-    #barYellow { background-color: gold; }
-  </style>
+  <meta charset="UTF-8" />
+  <title>Twitch Vote Logger</title>
 </head>
 <body>
-  <div class="bar"><div id="barRed" class="fill" style="width:0%"><span id="labelRed"></span></div></div>
-  <div class="bar"><div id="barBlue" class="fill" style="width:0%"><span id="labelBlue"></span></div></div>
-  <div class="bar"><div id="barGreen" class="fill" style="width:0%"><span id="labelGreen"></span></div></div>
-  <div class="bar"><div id="barYellow" class="fill" style="width:0%"><span id="labelYellow"></span></div></div>
+  <h1>Twitch Voting Active</h1>
+  <p>Listening for !votered, !voteblue, !votegreen, !voteyellow</p>
+
+  <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  <script src="index.js"></script>
 </body>
 </html>

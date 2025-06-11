@@ -1,7 +1,7 @@
 let countRed = 0, countBlue = 0, countGreen = 0, countYellow = 0;
 
 // Your Google Apps Script Web App URL
-const scriptURL = "https://script.google.com/macros/s/AKfycbwY7BC_pOPk_ozFJOOAKYkMkx5zqZnUzgqANJJdO6f184eETO3lGNAkbyrH4TII-b34AA/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbwZWsTlM5SGugV7we0g-0n5EGvn71Gfdq2046p8jAgXTWcZDcCXZDpF3pEasps22E9A4Q/exec";
 
 function updateBars() {
   const total = countRed + countBlue + countGreen + countYellow || 1;

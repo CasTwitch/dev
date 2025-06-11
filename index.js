@@ -49,8 +49,5 @@ ComfyJS.onCommand = (user, command) => {
 };
 
 // Initialize your bot for the first channel:
-ComfyJS.Init("casthekingofawesomeness");
+ComfyJS.Init("StreamElements", null, ["castheking02", "casthekingofawesomeness"]);
 
-// Join the other channels you want to listen to:
-ComfyJS.Join("castheking02");
-ComfyJS.Join("anotherchannel"); // Add more channels as needed

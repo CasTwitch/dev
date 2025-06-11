@@ -1,14 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Twitch Vote Logger</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Twitch Vote</title>
+  <!-- External Googleusercontent script -->
+  <script src="https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLjzuGt7frzu9RynF17xnWXi81gO-Qh4mPHBe8jyAKnnRlAiOx8UH_5Orb3hp3uDlnJJWlh_hHa4oBu_rJlqPp3sCh3CbJrTYCxP-uEE8ieDkrbFx6dzb9rJJCwx_Y02z2WWVS7nfCmb0Z23D4TEofJ8BIYzG6V3YsrRBnQTd4yUw4GOw6ixu6TN5rFGhmC0Y2nVTZCDzmHaBoIHJw4Bm722TmedXdyQfC5EE57kk8YZ1bLbyYDd1Xi3PqGNsA&lib=MeaYsQTwvRmx50QmXqr06QZq1e8rbxTfw"></script>
+  <!-- Your own script -->
+  <script defer src="index.js"></script>
+  <style>
+    /* Optional minimal styling for bars and labels */
+    .bar {
+      height: 30px;
+      background-color: #ccc;
+      margin: 5px 0;
+      width: 0;
+      transition: width 0.3s;
+    }
+    #barRed { background-color: red; }
+    #barBlue { background-color: blue; }
+    #barGreen { background-color: green; }
+    #barYellow { background-color: yellow; }
+  </style>
 </head>
 <body>
-  <h1>Twitch Voting Active</h1>
-  <p>Listening for !votered, !voteblue, !votegreen, !voteyellow</p>
-
-  <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
-  <script src="index.js"></script>
+  <h1>Twitch Vote Results</h1>
+  
+  <div>
+    <div id="labelRed">Red: 0 (0%)</div>
+    <div id="barRed" class="bar"></div>
+  </div>
+  <div>
+    <div id="labelBlue">Blue: 0 (0%)</div>
+    <div id="barBlue" class="bar"></div>
+  </div>
+  <div>
+    <div id="labelGreen">Green: 0 (0%)</div>
+    <div id="barGreen" class="bar"></div>
+  </div>
+  <div>
+    <div id="labelYellow">Yellow: 0 (0%)</div>
+    <div id="barYellow" class="bar"></div>
+  </div>
 </body>
 </html>

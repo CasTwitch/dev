@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'; // Replace with your actual URL
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwZWsTlM5SGugV7we0g-0n5EGvn71Gfdq2046p8jAgXTWcZDcCXZDpF3pEasps22E9A4Q/exec'; // Replace with your actual URL
 
 async function fetchVotes() {
   try {

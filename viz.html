@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vote Visualization</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+    max-width: 400px;
+    margin: 40px auto;
+  }
+  .bar-container {
+    margin-bottom: 15px;
+  }
+  .bar-label {
+    margin-bottom: 5px;
+  }
+  .bar {
+    height: 30px;
+    background: grey;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    width: 0;
+    transition: width 0.5s ease;
+  }
+  .votered { background: #e74c3c; }
+  .voteblue { background: #3498db; }
+  .votegreen { background: #2ecc71; }
+  .voteyellow { background: #f1c40f; color: black; }
+</style>
+</head>
+<body>
+
+<h2>Current Votes</h2>
+
+<div id="votered" class="bar-container">
+  <div class="bar-label">Red</div>
+  <div class="bar"><div class="bar-fill votered"></div></div>
+</div>
+
+<div id="voteblue" class="bar-container">
+  <div class="bar-label">Blue</div>
+  <div class="bar"><div class="bar-fill voteblue"></div></div>
+</div>
+
+<div id="votegreen" class="bar-container">
+  <div class="bar-label">Green</div>
+  <div class="bar"><div class="bar-fill votegreen"></div></div>
+</div>
+
+<div id="voteyellow" class="bar-container">
+  <div class="bar-label">Yellow</div>
+  <div class="bar"><div class="bar-fill voteyellow"></div></div>
+</div>
+
+<script src="viz.js"></script>
+</body>
+</html>

@@ -49,5 +49,5 @@ ComfyJS.onCommand = (user, command) => {
 };
 
 // Initialize your bot for the first channel:
-ComfyJS.Init("StreamElements", null, ["castheking02", "djzandr" "djkyzersosa" "casthekingofawesomeness"]);
+ComfyJS.Init("StreamElements", null, ["castheking02", "djzandr", "djkyzersosa", "casthekingofawesomeness"]);
 

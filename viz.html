@@ -5,41 +5,47 @@
   <title>Vote Vizz</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body {
-      font-family: sans-serif;
-      background: #f5f5f5;
+    html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
+      font-family: sans-serif;
+      background: #f5f5f5;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
     }
 
     .container {
       width: 700px;
       height: 700px;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
       box-sizing: border-box;
       padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      gap: 20px;
     }
 
     h1, h2 {
       text-align: center;
-      margin: 0;
+      margin: 10px 0;
+    }
+
+    .bars-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
     }
 
     .bar-wrapper {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      height: 20%;
     }
 
     .bar-container {
       flex: 1;
-      height: 28px;
+      height: 100%;
       background: #ccc;
       border-radius: 4px;
       overflow: hidden;
@@ -65,15 +71,12 @@
     #bar-red {
       background: linear-gradient(90deg, #ff4e50, #ff7676);
     }
-
     #bar-blue {
       background: linear-gradient(90deg, #4a90e2, #6bb9f0);
     }
-
     #bar-green {
       background: linear-gradient(90deg, #2ecc71, #58d68d);
     }
-
     #bar-yellow {
       background: linear-gradient(90deg, #f1c40f, #f9e79f);
       color: #000;
@@ -83,7 +86,6 @@
     .count {
       position: absolute;
       right: 8px;
-      line-height: 28px;
       font-weight: bold;
       color: #fff;
     }
@@ -95,10 +97,18 @@
       font-weight: bold;
     }
 
+    .pie-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
     #pie-container {
       width: 100%;
-      max-width: 100%;
-      height: 330px;
+      height: 100%;
+      max-height: 100%;
+      aspect-ratio: 1;
     }
 
     canvas {
@@ -115,9 +125,8 @@
 </head>
 <body>
   <div class="container">
-    <div>
+    <div class="bars-section">
       <h1>Live Vote VIZZ</h1>
-
       <div class="bar-wrapper">
         <div class="bar-container">
           <div id="bar-red" class="bar">🇨🇦🇺🇸 CAN/U.S.</div>
@@ -125,7 +134,6 @@
         </div>
         <div id="percent-red" class="percentage">0%</div>
       </div>
-
       <div class="bar-wrapper">
         <div class="bar-container">
           <div id="bar-blue" class="bar">🇬🇧 UK</div>
@@ -133,7 +141,6 @@
         </div>
         <div id="percent-blue" class="percentage">0%</div>
       </div>
-
       <div class="bar-wrapper">
         <div class="bar-container">
           <div id="bar-green" class="bar">🇦🇺🇳🇿 AUS/NZ</div>
@@ -141,7 +148,6 @@
         </div>
         <div id="percent-green" class="percentage">0%</div>
       </div>
-
       <div class="bar-wrapper">
         <div class="bar-container">
           <div id="bar-yellow" class="bar">🇪🇺 EURO</div>
@@ -151,7 +157,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="pie-section">
       <h2>Vote Distribution</h2>
       <div id="pie-container">
         <canvas id="pieChart"></canvas>
@@ -170,9 +176,7 @@
       yellow: { label: '🇪🇺 EURO',       color: ['#f1c40f', '#f9e79f'] }
     };
 
-    const canvas = document.getElementById('pieChart');
-    const ctx = canvas.getContext('2d');
-
+    const ctx = document.getElementById('pieChart').getContext('2d');
     const pieChart = new Chart(ctx, {
       type: 'pie',
       data: {

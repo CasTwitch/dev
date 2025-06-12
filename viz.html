@@ -4,88 +4,56 @@
   <meta charset="UTF-8" />
   <title>Vote Vizz</title>
   <style>
+    body {
+      font-family: sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .bar-wrapper {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .label {
+      width: 100px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
     .bar-container {
-      margin: 10px 0;
-      width: 300px;
-      background: #ddd;
+      flex: 1;
       height: 24px;
+      background: #ddd;
       border-radius: 4px;
       overflow: hidden;
       position: relative;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
+
     .bar {
       height: 100%;
       transition: width 0.5s ease;
     }
-    #bar-red { background: #e74c3c; }
-    #bar-blue { background: #3498db; }
-    #bar-green { background: #2ecc71; }
-    #bar-yellow { background: #f1c40f; }
-    .count {
-      position: absolute;
-      right: 8px;
-      top: 0;
-      bottom: 0;
-      line-height: 24px;
-      font-weight: bold;
-      color: #333;
-    }
-  </style>
-</head>
-<body>
-  <h1>Live Vote VIZZ</h1>
 
-  <div class="bar-container">
-    <div id="bar-red" class="bar"></div>
-    <div id="count-red" class="count">0</div>
-  </div>
-  <div class="bar-container">
-    <div id="bar-blue" class="bar"></div>
-    <div id="count-blue" class="count">0</div>
-  </div>
-  <div class="bar-container">
-    <div id="bar-green" class="bar"></div>
-    <div id="count-green" class="count">0</div>
-  </div>
-  <div class="bar-container">
-    <div id="bar-yellow" class="bar"></div>
-    <div id="count-yellow" class="count">0</div>
-  </div>
-
-  <script>
-    const votesUrl = 'https://script.google.com/macros/s/AKfycbzv5LQFZ2Dj2x4OMQZr1o20acXoN4DCy8Vez7oxc1A8T0hCGBK5EqHusXWxq7yIgY21Pw/exec'; // Replace with your actual URL
-
-    async function fetchVotes() {
-      try {
-        const response = await fetch(votesUrl);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const votes = await response.json();
-        updateBars(votes);
-      } catch (error) {
-        console.error('Error fetching votes:', error);
-      }
+    #bar-red {
+      background: linear-gradient(90deg, #ff6b6b, #e74c3c);
     }
 
-    function updateBars(votes) {
-      const maxVotes = Math.max(...Object.values(votes), 1);
-      // Update bars and counts with safe fallback for missing keys
-      const keys = ['votered', 'voteblue', 'votegreen', 'voteyellow'];
-      keys.forEach(key => {
-        const count = votes[key] || 0;
-        const bar = document.getElementById('bar-' + key.slice(4)); // removes 'vote' prefix, e.g. 'red'
-        const countElem = document.getElementById('count-' + key.slice(4));
-        if (bar && countElem) {
-          bar.style.width = (count / maxVotes) * 100 + '%';
-          countElem.textContent = count;
-        }
-      });
+    #bar-blue {
+      background: linear-gradient(90deg, #74b9ff, #3498db);
     }
 
-    // Initial fetch
-    fetchVotes();
+    #bar-green {
+      background: linear-gradient(90deg, #55efc4, #2ecc71);
+    }
 
-    // Auto refresh every 10 seconds
-    setInterval(fetchVotes, 10000);
-  </script>
-</body>
-</html>
+    #bar-yellow {
+      background: linear-gradient(90deg, #ffeaa7,

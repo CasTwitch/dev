@@ -2,75 +2,89 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Vote Visual</title>
+  <title>Vote Visualisation</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="frame">
-    <div class="container">
-      <div class="bars-section">
-        <div class="bar-wrapper">
-          <div class="bar-container">
-            <div id="bar-red" class="bar-text">🇨🇦🇺🇸 CAN/U.S.</div>
-            <div id="bar-red-fill" class="bar-fill red"></div>
-            <div id="count-red" class="count">0</div>
-            <div id="percent-red" class="percentage">0%</div>
-          </div>
-        </div>
-        <div class="bar-wrapper">
-          <div class="bar-container">
-            <div id="bar-blue" class="bar-text">🇬🇧 UK</div>
-            <div id="bar-blue-fill" class="bar-fill blue"></div>
-            <div id="count-blue" class="count">0</div>
-            <div id="percent-blue" class="percentage">0%</div>
-          </div>
-        </div>
-        <div class="bar-wrapper">
-          <div class="bar-container">
-            <div id="bar-green" class="bar-text">🇦🇺🇳🇿 AUS/NZ</div>
-            <div id="bar-green-fill" class="bar-fill green"></div>
-            <div id="count-green" class="count">0</div>
-            <div id="percent-green" class="percentage">0%</div>
-          </div>
-        </div>
-        <div class="bar-wrapper">
-          <div class="bar-container">
-            <div id="bar-yellow" class="bar-text">🇪🇺 EURO</div>
-            <div id="bar-yellow-fill" class="bar-fill yellow"></div>
-            <div id="count-yellow" class="count">0</div>
-            <div id="percent-yellow" class="percentage">0%</div>
-          </div>
-        </div>
-      </div>
+  <div class="container">
+    <h1>Live Vote VIZZ</h1>
 
-      <div class="pie-section">
-        <svg id="piechart" viewBox="0 0 300 300"></svg>
+    <!-- Vote Bars -->
+    <div class="bar-container">
+      <div id="bar-red" class="bar red">
+        🇨🇦🇺🇸 CAN/U.S. <span class="count" id="count-red">0%</span>
       </div>
     </div>
+    <div class="bar-container">
+      <div id="bar-blue" class="bar blue">
+        🇬🇧 UK <span class="count" id="count-blue">0%</span>
+      </div>
+    </div>
+    <div class="bar-container">
+      <div id="bar-green" class="bar green">
+        🇦🇺🇳🇿 AUS/NZ <span class="count" id="count-green">0%</span>
+      </div>
+    </div>
+    <div class="bar-container">
+      <div id="bar-yellow" class="bar yellow">
+        🇪🇺 EURO <span class="count" id="count-yellow">0%</span>
+      </div>
+    </div>
+
+    <!-- Pie Chart -->
+    <svg viewBox="0 0 200 200" class="pie-chart">
+      <circle r="80" cx="100" cy="100" class="slice red" id="slice-red"></circle>
+      <circle r="80" cx="100" cy="100" class="slice blue" id="slice-blue"></circle>
+      <circle r="80" cx="100" cy="100" class="slice green" id="slice-green"></circle>
+      <circle r="80" cx="100" cy="100" class="slice yellow" id="slice-yellow"></circle>
+    </svg>
   </div>
 
   <script>
     const votesUrl = 'https://script.google.com/macros/s/AKfycbzv5LQFZ2Dj2x4OMQZr1o20acXoN4DCy8Vez7oxc1A8T0hCGBK5EqHusXWxq7yIgY21Pw/exec';
-    const colors = {
-      red: ['#ff4d4d', '#b30000'],
-      blue: ['#4da6ff', '#004080'],
-      green: ['#66ff66', '#006600'],
-      yellow: ['#ffe066', '#cc9900']
-    };
-
-    const keys = ['votered', 'voteblue', 'votegreen', 'voteyellow'];
 
     async function fetchVotes() {
       try {
         const response = await fetch(votesUrl);
-        if (!response.ok) throw new Error('Network error');
         const votes = await response.json();
-        updateBars(votes);
-        updatePie(votes);
-      } catch (error) {
-        console.error('Fetch error:', error);
+        updateVisuals(votes);
+      } catch (err) {
+        console.error('Vote fetch failed:', err);
       }
     }
 
-    function updateBars(votes) {
-      const maxVotes = Math.max(...Object.values(votes), 1);
+    function updateVisuals(votes) {
+      const keys = ['votered', 'voteblue', 'votegreen', 'voteyellow'];
+      const total = keys.reduce((sum, k) => sum + (votes[k] || 0), 0) || 1;
+      let offset = 0;
+
+      keys.forEach((key) => {
+        const count = votes[key] || 0;
+        const id = key.slice(4);
+        const percent = Math.round((count / total) * 100);
+        const bar = document.getElementById(`bar-${id}`);
+        const countEl = document.getElementById(`count-${id}`);
+        const slice = document.getElementById(`slice-${id}`);
+
+        const width = percent + '%';
+        if (bar.style.width !== width) {
+          bar.classList.remove('blink');
+          void bar.offsetWidth;
+          bar.classList.add('blink');
+        }
+
+        bar.style.width = width;
+        countEl.textContent = percent + '%';
+
+        const dash = (percent / 100) * 502;
+        slice.setAttribute('stroke-dasharray', `${dash} ${502 - dash}`);
+        slice.setAttribute('stroke-dashoffset', -offset);
+        offset += dash;
+      });
+    }
+
+    fetchVotes();
+    setInterval(fetchVotes, 10000);
+  </script>
+</body>
+</html>

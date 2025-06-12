@@ -6,37 +6,8 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Live Vote VIZZ</h1>
-
-    <!-- Vote Bars -->
-    <div class="bar-container">
-      <div id="bar-red" class="bar red">
-        <span class="label">🇨🇦🇺🇸 CAN/U.S.</span>
-        <span class="count" id="count-red">0%</span>
-      </div>
-    </div>
-    <div class="bar-container">
-      <div id="bar-blue" class="bar blue">
-        <span class="label">🇬🇧 UK</span>
-        <span class="count" id="count-blue">0%</span>
-      </div>
-    </div>
-    <div class="bar-container">
-      <div id="bar-green" class="bar green">
-        <span class="label">🇦🇺🇳🇿 AUS/NZ</span>
-        <span class="count" id="count-green">0%</span>
-      </div>
-    </div>
-    <div class="bar-container">
-      <div id="bar-yellow" class="bar yellow">
-        <span class="label">🇪🇺 EURO</span>
-        <span class="count" id="count-yellow">0%</span>
-      </div>
-    </div>
-
-    <!-- Pie Chart -->
-    <svg viewBox="0 0 200 200" class="pie-chart" >
+  <div class="container-horizontal">
+    <svg viewBox="0 0 200 200" class="pie-chart">
       <defs>
         <linearGradient id="grad-red" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stop-color="#c0392b"/>
@@ -61,6 +32,35 @@
       <circle r="80" cx="100" cy="100" class="slice green" id="slice-green"></circle>
       <circle r="80" cx="100" cy="100" class="slice yellow" id="slice-yellow"></circle>
     </svg>
+
+    <div class="bars-wrapper">
+      <h1>Live Vote VIZZ</h1>
+
+      <div class="bar-container">
+        <div id="bar-red" class="bar red">
+          <span class="label">🇨🇦🇺🇸 CAN/U.S.</span>
+          <span class="count" id="count-red">0%</span>
+        </div>
+      </div>
+      <div class="bar-container">
+        <div id="bar-blue" class="bar blue">
+          <span class="label">🇬🇧 UK</span>
+          <span class="count" id="count-blue">0%</span>
+        </div>
+      </div>
+      <div class="bar-container">
+        <div id="bar-green" class="bar green">
+          <span class="label">🇦🇺🇳🇿 AUS/NZ</span>
+          <span class="count" id="count-green">0%</span>
+        </div>
+      </div>
+      <div class="bar-container">
+        <div id="bar-yellow" class="bar yellow">
+          <span class="label">🇪🇺 EURO</span>
+          <span class="count" id="count-yellow">0%</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>

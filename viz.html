@@ -13,25 +13,30 @@
   }
 
   /* Container 1000x300 fixed */
-  .container-horizontal {
-    width: 1000px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    background: transparent;
-    font-family: Arial, sans-serif;
-    color: white;
-    box-sizing: border-box;
-    overflow: hidden;
-  }
+ .container-horizontal {
+  width: 1000px;
+  height: 300px;
+  display: flex;
+  flex-direction: row; /* Ensure horizontal layout */
+  flex-wrap: nowrap;   /* Prevent wrapping */
+  align-items: center;
+  gap: 40px;
+  background: transparent;
+  font-family: Arial, sans-serif;
+  color: white;
+  box-sizing: border-box;
+  overflow: hidden;
+}
 
-  /* Pie chart styles */
-  .pie-chart {
-    width: 200px;
-    height: 200px;
-    transform: rotate(-90deg);
-  }
+.pie-chart {
+  width: 280px;
+  height: 280px;
+  flex-shrink: 0;        /* Prevent shrinking */
+  transform: rotate(0deg);
+  background: transparent;
+  display: block;
+}
+
 
   /* Circle slices with gradient fills */
   .slice {

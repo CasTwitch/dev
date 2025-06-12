@@ -1,260 +1,291 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Vote Vizz</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 700px;
-      width: 700px;
-    }
-
-    .container {
-      width: 650px;
-      height: 650px;
-      display: grid;
-      grid-template-rows: 1fr 1fr;
-      gap: 15px;
-      box-sizing: border-box;
-    }
-
-    .bars-section {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
-      padding: 5px 0;
-    }
-
-    .bar-wrapper {
-      display: flex;
-      align-items: center;
-      height: 24px;
-      margin-bottom: 6px;
-    }
-
-    .bar-container {
-      flex: 1;
-      height: 100%;
-      background: #ccc;
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      display: flex;
-      align-items: center;
-    }
-
-    .bar {
-      height: 100%;
-      transition: width 0.8s ease;
-      display: flex;
-      align-items: center;
-      padding-left: 6px;
-      color: #fff;
-      font-weight: bold;
-      white-space: nowrap;
-      overflow: hidden;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
-      font-size: 11px;
-    }
-
-    #bar-red {
-      background: linear-gradient(90deg, #ff4e50, #ff7676);
-    }
-    #bar-blue {
-      background: linear-gradient(90deg, #4a90e2, #6bb9f0);
-    }
-    #bar-green {
-      background: linear-gradient(90deg, #2ecc71, #58d68d);
-    }
-    #bar-yellow {
-      background: linear-gradient(90deg, #f1c40f, #f9e79f);
-      color: #000;
-      text-shadow: none;
-    }
-
-    .count {
-      position: absolute;
-      right: 6px;
-      font-weight: bold;
-      color: #fff;
-      font-size: 11px;
-    }
-
-    .percentage {
-      width: 36px;
-      text-align: right;
-      margin-left: 6px;
-      font-weight: bold;
-      font-size: 11px;
-    }
-
-    .pie-section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #pie-container {
-      width: 100%;
-      height: 100%;
-      max-height: 300px;
-      max-width: 300px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    canvas {
-      width: 100% !important;
-      height: auto !important;
-      aspect-ratio: 1 / 1;
-      animation: fadeIn 0.8s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Vote Vizz</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 700px;
+    width: 700px;
+  }
+  .container {
+    width: 650px;
+    height: 650px;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 15px;
+    box-sizing: border-box;
+  }
+  /* Bar chart styles */
+  .bars-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 5px 0;
+  }
+  .bar-wrapper {
+    display: flex;
+    align-items: center;
+    height: 24px;
+    margin-bottom: 6px;
+  }
+  .bar-container {
+    flex: 1;
+    height: 100%;
+    background: #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+  }
+  .bar {
+    height: 100%;
+    transition: width 0.8s ease;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+    color: #fff;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+    font-size: 11px;
+  }
+  #bar-red {
+    background: linear-gradient(90deg, #ff4e50, #ff7676);
+  }
+  #bar-blue {
+    background: linear-gradient(90deg, #4a90e2, #6bb9f0);
+  }
+  #bar-green {
+    background: linear-gradient(90deg, #2ecc71, #58d68d);
+  }
+  #bar-yellow {
+    background: linear-gradient(90deg, #f1c40f, #f9e79f);
+    color: #000;
+    text-shadow: none;
+  }
+  .count {
+    position: absolute;
+    right: 6px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 11px;
+  }
+  .percentage {
+    width: 36px;
+    text-align: right;
+    margin-left: 6px;
+    font-weight: bold;
+    font-size: 11px;
+  }
+  /* Pie chart styles */
+  .pie-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #pie {
+    width: 300px;
+    height: 300px;
+    position: relative;
+  }
+  #pie svg {
+    width: 100%;
+    height: 100%;
+  }
+  .slice-label {
+    font-size: 12px;
+    fill: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    pointer-events: none;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="bars-section">
-      <div class="bar-wrapper">
-        <div class="bar-container">
-          <div id="bar-red" class="bar">🇨🇦🇺🇸 CAN/U.S.</div>
-          <div id="count-red" class="count">0</div>
-        </div>
-        <div id="percent-red" class="percentage">0%</div>
+<div class="container">
+  <div class="bars-section">
+    <div class="bar-wrapper">
+      <div class="bar-container">
+        <div id="bar-red" class="bar">🇨🇦🇺🇸 CAN/U.S.</div>
+        <div id="count-red" class="count">0</div>
       </div>
-      <div class="bar-wrapper">
-        <div class="bar-container">
-          <div id="bar-blue" class="bar">🇬🇧 UK</div>
-          <div id="count-blue" class="count">0</div>
-        </div>
-        <div id="percent-blue" class="percentage">0%</div>
-      </div>
-      <div class="bar-wrapper">
-        <div class="bar-container">
-          <div id="bar-green" class="bar">🇦🇺🇳🇿 AUS/NZ</div>
-          <div id="count-green" class="count">0</div>
-        </div>
-        <div id="percent-green" class="percentage">0%</div>
-      </div>
-      <div class="bar-wrapper">
-        <div class="bar-container">
-          <div id="bar-yellow" class="bar">🇪🇺 EURO</div>
-          <div id="count-yellow" class="count">0</div>
-        </div>
-        <div id="percent-yellow" class="percentage">0%</div>
-      </div>
+      <div id="percent-red" class="percentage">0%</div>
     </div>
-
-    <div class="pie-section">
-      <div id="pie-container">
-        <canvas id="pieChart"></canvas>
+    <div class="bar-wrapper">
+      <div class="bar-container">
+        <div id="bar-blue" class="bar">🇬🇧 UK</div>
+        <div id="count-blue" class="count">0</div>
       </div>
+      <div id="percent-blue" class="percentage">0%</div>
+    </div>
+    <div class="bar-wrapper">
+      <div class="bar-container">
+        <div id="bar-green" class="bar">🇦🇺🇳🇿 AUS/NZ</div>
+        <div id="count-green" class="count">0</div>
+      </div>
+      <div id="percent-green" class="percentage">0%</div>
+    </div>
+    <div class="bar-wrapper">
+      <div class="bar-container">
+        <div id="bar-yellow" class="bar">🇪🇺 EURO</div>
+        <div id="count-yellow" class="count">0</div>
+      </div>
+      <div id="percent-yellow" class="percentage">0%</div>
     </div>
   </div>
 
-  <script>
-    const votesUrl = 'https://script.google.com/macros/s/AKfycbzv5LQFZ2Dj2x4OMQZr1o20acXoN4DCy8Vez7oxc1A8T0hCGBK5EqHusXWxq7yIgY21Pw/exec';
+  <div class="pie-section">
+    <div id="pie">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Vote Pie Chart"></svg>
+    </div>
+  </div>
+</div>
+
+<script>
+  const votesUrl = 'https://script.google.com/macros/s/AKfycbzv5LQFZ2Dj2x4OMQZr1o20acXoN4DCy8Vez7oxc1A8T0hCGBK5EqHusXWxq7yIgY21Pw/exec';
+
+  const bars = {
+    red:    { label: '🇨🇦🇺🇸 CAN/U.S.', colors: ['#ff4e50', '#ff7676'] },
+    blue:   { label: '🇬🇧 UK',         colors: ['#4a90e2', '#6bb9f0'] },
+    green:  { label: '🇦🇺🇳🇿 AUS/NZ',   colors: ['#2ecc71', '#58d68d'] },
+    yellow: { label: '🇪🇺 EURO',       colors: ['#f1c40f', '#f9e79f'] }
+  };
+
+  // Helper to create gradient fills in SVG
+  function createGradient(svg, id, colors) {
+    const defs = svg.querySelector('defs') || (() => {
+      const d = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+      svg.appendChild(d);
+      return d;
+    })();
+    let grad = document.getElementById(id);
+    if (!grad) {
+      grad = document.createElementNS("http://www.w3.org/2000/svg", "radialGradient");
+      grad.setAttribute("id", id);
+      grad.setAttribute("cx", "50%");
+      grad.setAttribute("cy", "50%");
+      grad.setAttribute("r", "50%");
+      grad.setAttribute("fx", "50%");
+      grad.setAttribute("fy", "50%");
+      colors.forEach((color, i) => {
+        const stop = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+        stop.setAttribute("offset", `${i/(colors.length-1)*100}%`);
+        stop.setAttribute("stop-color", color);
+        grad.appendChild(stop);
+      });
+      defs.appendChild(grad);
+    }
+    return `url(#${id})`;
+  }
+
+  // Draw pie chart
+  function drawPieChart(data) {
+    const svg = document.querySelector("#pie svg");
+    svg.innerHTML = ''; // Clear previous
+
+    const total = data.reduce((a,b) => a+b, 0) || 1;
+    const centerX = 150;
+    const centerY = 150;
+    const radius = 140;
+    let startAngle = 0;
+
+    Object.keys(bars).forEach((key, i) => {
+      const value = data[i];
+      if (value === 0) return;
+      const sliceAngle = (value / total) * 2 * Math.PI;
+
+      // Calculate coordinates for arc
+      const x1 = centerX + radius * Math.cos(startAngle);
+      const y1 = centerY + radius * Math.sin(startAngle);
+      const x2 = centerX + radius * Math.cos(startAngle + sliceAngle);
+      const y2 = centerY + radius * Math.sin(startAngle + sliceAngle);
+
+      // Large arc flag
+      const largeArc = sliceAngle > Math.PI ? 1 : 0;
+
+      // Path for slice
+      const pathData = [
+        `M ${centerX} ${centerY}`,
+        `L ${x1} ${y1}`,
+        `A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}`,
+        'Z'
+      ].join(' ');
+
+      // Create path element
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", pathData);
+      path.setAttribute("fill", createGradient(svg, `grad-${key}`, bars[key].colors));
+      path.style.transition = "all 0.8s ease";
+
+      svg.appendChild(path);
+
+      // Label positioning (middle of slice)
+      const midAngle = startAngle + sliceAngle / 2;
+      const labelRadius = radius * 0.6;
+      const labelX = centerX + labelRadius * Math.cos(midAngle);
+      const labelY = centerY + labelRadius * Math.sin(midAngle);
+
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", labelX);
+      text.setAttribute("y", labelY);
+      text.setAttribute("class", "slice-label");
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("alignment-baseline", "middle");
+      text.textContent = bars[key].label;
+      svg.appendChild(text);
+
+      startAngle += sliceAngle;
+    });
+  }
+
+  // Update bars with new data
+  function updateBars(votes) {
     const keys = ['votered', 'voteblue', 'votegreen', 'voteyellow'];
+    const counts = keys.map(k => votes[k] || 0);
+    const total = counts.reduce((a,b) => a+b, 0) || 1;
+    const maxVotes = Math.max(...counts, 1);
 
-    const bars = {
-      red:    { label: '🇨🇦🇺🇸 CAN/U.S.', color: ['#ff4e50', '#ff7676'] },
-      blue:   { label: '🇬🇧 UK',         color: ['#4a90e2', '#6bb9f0'] },
-      green:  { label: '🇦🇺🇳🇿 AUS/NZ',   color: ['#2ecc71', '#58d68d'] },
-      yellow: { label: '🇪🇺 EURO',       color: ['#f1c40f', '#f9e79f'] }
-    };
-
-    const ctx = document.getElementById('pieChart').getContext('2d');
-    const pieChart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: Object.values(bars).map(b => b.label),
-        datasets: [{
-          data: [0, 0, 0, 0],
-          backgroundColor: [],
-          borderColor: '#fff',
-          borderWidth: 2
-        }]
-      },
-      options: {
-        animation: {
-          animateRotate: true,
-          animateScale: true
-        },
-        plugins: {
-          legend: {
-            display: false
-          }
-        }
-      },
-      plugins: [{
-        id: 'gradientFills',
-        beforeDraw(chart) {
-          const {ctx, chartArea} = chart;
-          if (!chartArea) return;
-          const gradients = Object.values(bars).map(bar => {
-            const grad = ctx.createRadialGradient(
-              chartArea.width / 2, chartArea.height / 2, 0,
-              chartArea.width / 2, chartArea.height / 2, chartArea.width / 2
-            );
-            grad.addColorStop(0, bar.color[0]);
-            grad.addColorStop(1, bar.color[1]);
-            return grad;
-          });
-          chart.data.datasets[0].backgroundColor = gradients;
-        }
-      }]
+    keys.forEach((key, i) => {
+      const short = key.slice(4);
+      const count = counts[i];
+      const bar = document.getElementById('bar-' + short);
+      const countElem = document.getElementById('count-' + short);
+      const percentElem = document.getElementById('percent-' + short);
+      if (bar && countElem && percentElem) {
+        const widthPercent = (count / maxVotes) * 100;
+        bar.style.width = widthPercent + '%';
+        countElem.textContent = count;
+        percentElem.textContent = Math.round((count/total)*100) + '%';
+      }
     });
 
-    async function fetchVotes() {
-      try {
-        const response = await fetch(votesUrl);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const votes = await response.json();
-        updateBars(votes);
-        updatePie(votes);
-      } catch (error) {
-        console.error('Error fetching votes:', error);
-      }
+    drawPieChart(counts);
+  }
+
+  async function fetchVotes() {
+    try {
+      const response = await fetch(votesUrl);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const votes = await response.json();
+      updateBars(votes);
+    } catch (e) {
+      console.error('Fetch error:', e);
     }
+  }
 
-    function updateBars(votes) {
-      const counts = keys.map(k => votes[k] || 0);
-      const total = counts.reduce((sum, val) => sum + val, 0);
-      const maxVotes = Math.max(...counts, 1);
-
-      keys.forEach((key, i) => {
-        const short = key.slice(4);
-        const count = votes[key] || 0;
-        const percent = total > 0 ? Math.round((count / total) * 100) : 0;
-
-        document.getElementById('bar-' + short).style.width = (count / maxVotes) * 100 + '%';
-        document.getElementById('count-' + short).textContent = count;
-        document.getElementById('percent-' + short).textContent = percent + '%';
-      });
-    }
-
-    function updatePie(votes) {
-      const data = keys.map(k => votes[k] || 0);
-      pieChart.data.datasets[0].data = data;
-      pieChart.update();
-    }
-
-    fetchVotes();
-    setInterval(fetchVotes, 10000);
-  </script>
+  fetchVotes();
+  setInterval(fetchVotes, 10000);
+</script>
 </body>
 </html>

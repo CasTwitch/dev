@@ -34,7 +34,7 @@
     display: flex;
     align-items: center;
     height: 24px;
-    margin-bottom: 6px;
+    margin-bottom: 10px; /* max 10px spacing */
   }
   .bar-container {
     flex: 1;
@@ -162,7 +162,6 @@
     yellow: { label: '🇪🇺 EURO',       colors: ['#f1c40f', '#f9e79f'] }
   };
 
-  // Helper to create gradient fills in SVG
   function createGradient(svg, id, colors) {
     const defs = svg.querySelector('defs') || (() => {
       const d = document.createElementNS("http://www.w3.org/2000/svg", "defs");
@@ -189,10 +188,9 @@
     return `url(#${id})`;
   }
 
-  // Draw pie chart
   function drawPieChart(data) {
     const svg = document.querySelector("#pie svg");
-    svg.innerHTML = ''; // Clear previous
+    svg.innerHTML = '';
 
     const total = data.reduce((a,b) => a+b, 0) || 1;
     const centerX = 150;
@@ -205,16 +203,13 @@
       if (value === 0) return;
       const sliceAngle = (value / total) * 2 * Math.PI;
 
-      // Calculate coordinates for arc
       const x1 = centerX + radius * Math.cos(startAngle);
       const y1 = centerY + radius * Math.sin(startAngle);
       const x2 = centerX + radius * Math.cos(startAngle + sliceAngle);
       const y2 = centerY + radius * Math.sin(startAngle + sliceAngle);
 
-      // Large arc flag
       const largeArc = sliceAngle > Math.PI ? 1 : 0;
 
-      // Path for slice
       const pathData = [
         `M ${centerX} ${centerY}`,
         `L ${x1} ${y1}`,
@@ -222,7 +217,6 @@
         'Z'
       ].join(' ');
 
-      // Create path element
       const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
       path.setAttribute("d", pathData);
       path.setAttribute("fill", createGradient(svg, `grad-${key}`, bars[key].colors));
@@ -230,7 +224,6 @@
 
       svg.appendChild(path);
 
-      // Label positioning (middle of slice)
       const midAngle = startAngle + sliceAngle / 2;
       const labelRadius = radius * 0.6;
       const labelX = centerX + labelRadius * Math.cos(midAngle);
@@ -249,12 +242,11 @@
     });
   }
 
-  // Update bars with new data
   function updateBars(votes) {
     const keys = ['votered', 'voteblue', 'votegreen', 'voteyellow'];
     const counts = keys.map(k => votes[k] || 0);
-    const total = counts.reduce((a,b) => a+b, 0) || 1;
     const maxVotes = Math.max(...counts, 1);
+    const total = counts.reduce((a,b) => a+b, 0) || 1;
 
     keys.forEach((key, i) => {
       const short = key.slice(4);

@@ -2,125 +2,122 @@
 .container {
   width: 700px;
   height: 700px;
+  /* background removed for transparency */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
   box-sizing: border-box;
-  padding: 20px;
-  font-family: sans-serif;
-  position: relative;
+  color: white;
+  font-family: Arial, sans-serif;
 }
 
 /* Title */
 h1 {
-  text-align: center;
   margin-bottom: 20px;
+  color: white;
 }
 
-/* Bar chart */
+/* Bars */
 .bar-container {
-  margin-bottom: 10px;
-  width: 100%;
-  height: 30px;
-  background: #ddd;
+  margin: 5px 0;          /* vertical spacing max ~10px total */
+  width: 300px;
+  height: 24px;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+
+  background: transparent;     /* No background */
+  border: 2px solid white;     /* White outline */
+  box-sizing: border-box;
 }
 
+/* Bars themselves */
 .bar {
   height: 100%;
   position: relative;
-  transition: width 0.8s ease;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  transition: width 0.5s ease;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
-  box-sizing: border-box;
-  color: #fff;
+  padding: 0 8px;
+  color: white;
   font-weight: bold;
-  text-shadow: 1px 1px 2px #000;
-  z-index: 1;
+  text-shadow: 0 0 3px black;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
+/* Label on left inside bar */
+.label {
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Count on right inside bar */
+.count {
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Gradient backgrounds for bars */
 .red {
-  background: linear-gradient(90deg, #c0392b, #e74c3c);
-  box-shadow: 0 2px 6px rgba(192, 57, 43, 0.5);
+  background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%);
 }
 
 .blue {
-  background: linear-gradient(90deg, #2471a3, #3498db);
-  box-shadow: 0 2px 6px rgba(36, 113, 163, 0.5);
+  background: linear-gradient(90deg, #3498db 0%, #2471a3 100%);
 }
 
 .green {
-  background: linear-gradient(90deg, #27ae60, #2ecc71);
-  box-shadow: 0 2px 6px rgba(39, 174, 96, 0.5);
+  background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
 }
 
 .yellow {
-  background: linear-gradient(90deg, #d4ac0d, #f1c40f);
-  box-shadow: 0 2px 6px rgba(212, 172, 13, 0.5);
+  background: linear-gradient(90deg, #f1c40f 0%, #d4ac0d 100%);
 }
 
-/* Labels */
-.label {
-  z-index: 2;
-  position: relative;
-}
-
-/* Percent Count */
-.count {
-  z-index: 2;
-  position: relative;
-}
-
-/* Blinking animation */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+/* Blink animation when new vote */
+@keyframes blinkAnim {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.5); }
 }
 
 .blink {
-  animation: blink 0.6s ease-in-out;
+  animation: blinkAnim 0.8s ease 2;
 }
 
 /* Pie Chart */
 .pie-chart {
-  width: 100%;
-  height: auto;
-  max-height: 300px;
-  margin-top: 30px;
+  width: 300px;
+  height: 300px;
+  margin-top: 40px;
   transform: rotate(-90deg);
 }
 
 .slice {
   fill: none;
   stroke-width: 40;
-  transition: stroke-dasharray 1s ease, stroke-dashoffset 1s ease;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.7s ease, stroke-dashoffset 0.7s ease;
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.4));
 }
 
-.slice.red {
+.red.slice {
   stroke: url(#grad-red);
 }
-.slice.blue {
+
+.blue.slice {
   stroke: url(#grad-blue);
 }
-.slice.green {
+
+.green.slice {
   stroke: url(#grad-green);
 }
-.slice.yellow {
+
+.yellow.slice {
   stroke: url(#grad-yellow);
-}
-
-/* SVG gradients */
-.pie-chart defs {
-  position: absolute;
-  visibility: hidden;
-}
-
-/* Optional: Improve mobile scale */
-@media (max-width: 700px) {
-  .container {
-    width: 100%;
-    height: auto;
-  }
 }

@@ -1,7 +1,7 @@
 /* Container */
 .container {
-  width: 700px;
-  height: 700px;
+  width: 1200px;
+  height: 300px;
   /* background removed for transparency */
   display: flex;
   flex-direction: column;
@@ -20,15 +20,15 @@ h1 {
 
 /* Bars */
 .bar-container {
-  margin: 5px 0;          /* vertical spacing max ~10px total */
-  width: 600px;
+  margin: 0px 0;          /* vertical spacing max ~10px total */
+  width: 900px;
   height: 24px;
   border-radius: 1px;
   overflow: hidden;
   position: relative;
 
   background: transparent;     /* No background */
-  border: 1px solid white;     /* White outline */
+  box-shadow: -.25px 0 0 white;     /* White outline */
   box-sizing: border-box;
 }
 

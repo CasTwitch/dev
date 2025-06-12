@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Vote Vizz</title>
+<title>Vote Visual</title>
 <style>
   body {
     font-family: sans-serif;
@@ -20,21 +20,18 @@
     height: 650px;
     display: grid;
     grid-template-rows: 1fr 1fr;
-    gap: 15px;
-    box-sizing: border-box;
+    gap: 10px;
   }
-  /* Bar chart styles */
   .bars-section {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    padding: 5px 0;
+    justify-content: flex-start;
   }
   .bar-wrapper {
     display: flex;
     align-items: center;
     height: 24px;
-    margin-bottom: 10px; /* max 10px spacing */
+    margin-bottom: 10px;
   }
   .bar-container {
     flex: 1;
@@ -49,7 +46,6 @@
   }
   .bar {
     height: 100%;
-    transition: width 0.8s ease;
     display: flex;
     align-items: center;
     padding-left: 6px;
@@ -59,6 +55,15 @@
     overflow: hidden;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
     font-size: 11px;
+    width: 0;
+    transition: width 0.8s ease;
+  }
+  @keyframes blinkHighlight {
+    0%   { filter: brightness(1.8); }
+    100% { filter: brightness(1); }
+  }
+  .blink {
+    animation: blinkHighlight 0.6s ease forwards;
   }
   #bar-red {
     background: linear-gradient(90deg, #ff4e50, #ff7676);
@@ -88,7 +93,6 @@
     font-weight: bold;
     font-size: 11px;
   }
-  /* Pie chart styles */
   .pie-section {
     display: flex;
     justify-content: center;
@@ -147,7 +151,7 @@
 
   <div class="pie-section">
     <div id="pie">
-      <svg viewBox="0 0 300 300" role="img" aria-label="Vote Pie Chart"></svg>
+      <svg viewBox="0 0 300 300"></svg>
     </div>
   </div>
 </div>
@@ -161,6 +165,8 @@
     green:  { label: '🇦🇺🇳🇿 AUS/NZ',   colors: ['#2ecc71', '#58d68d'] },
     yellow: { label: '🇪🇺 EURO',       colors: ['#f1c40f', '#f9e79f'] }
   };
+
+  let previousCounts = { red: 0, blue: 0, green: 0, yellow: 0 };
 
   function createGradient(svg, id, colors) {
     const defs = svg.querySelector('defs') || (() => {
@@ -193,9 +199,7 @@
     svg.innerHTML = '';
 
     const total = data.reduce((a,b) => a+b, 0) || 1;
-    const centerX = 150;
-    const centerY = 150;
-    const radius = 140;
+    const centerX = 150, centerY = 150, radius = 140;
     let startAngle = 0;
 
     Object.keys(bars).forEach((key, i) => {
@@ -205,40 +209,39 @@
 
       const x1 = centerX + radius * Math.cos(startAngle);
       const y1 = centerY + radius * Math.sin(startAngle);
-      const x2 = centerX + radius * Math.cos(startAngle + sliceAngle);
-      const y2 = centerY + radius * Math.sin(startAngle + sliceAngle);
-
-      const largeArc = sliceAngle > Math.PI ? 1 : 0;
+      const endAngle = startAngle + sliceAngle;
+      const x2 = centerX + radius * Math.cos(endAngle);
+      const y2 = centerY + radius * Math.sin(endAngle);
+      const largeArcFlag = sliceAngle > Math.PI ? 1 : 0;
 
       const pathData = [
         `M ${centerX} ${centerY}`,
         `L ${x1} ${y1}`,
-        `A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}`,
+        `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
         'Z'
       ].join(' ');
 
+      const gradId = `grad-${key}`;
+      const fill = createGradient(svg, gradId, bars[key].colors);
       const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
       path.setAttribute("d", pathData);
-      path.setAttribute("fill", createGradient(svg, `grad-${key}`, bars[key].colors));
-      path.style.transition = "all 0.8s ease";
-
+      path.setAttribute("fill", fill);
       svg.appendChild(path);
 
       const midAngle = startAngle + sliceAngle / 2;
-      const labelRadius = radius * 0.6;
-      const labelX = centerX + labelRadius * Math.cos(midAngle);
-      const labelY = centerY + labelRadius * Math.sin(midAngle);
+      const lx = centerX + radius * 0.65 * Math.cos(midAngle);
+      const ly = centerY + radius * 0.65 * Math.sin(midAngle);
 
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("x", labelX);
-      text.setAttribute("y", labelY);
-      text.setAttribute("class", "slice-label");
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("alignment-baseline", "middle");
-      text.textContent = bars[key].label;
-      svg.appendChild(text);
+      const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("x", lx);
+      label.setAttribute("y", ly);
+      label.setAttribute("class", "slice-label");
+      label.setAttribute("text-anchor", "middle");
+      label.setAttribute("alignment-baseline", "middle");
+      label.textContent = bars[key].label;
+      svg.appendChild(label);
 
-      startAngle += sliceAngle;
+      startAngle = endAngle;
     });
   }
 
@@ -254,12 +257,18 @@
       const bar = document.getElementById('bar-' + short);
       const countElem = document.getElementById('count-' + short);
       const percentElem = document.getElementById('percent-' + short);
-      if (bar && countElem && percentElem) {
-        const widthPercent = (count / maxVotes) * 100;
-        bar.style.width = widthPercent + '%';
-        countElem.textContent = count;
-        percentElem.textContent = Math.round((count/total)*100) + '%';
+
+      const widthPercent = (count / maxVotes) * 100;
+      bar.style.width = widthPercent + '%';
+      countElem.textContent = count;
+      percentElem.textContent = Math.round((count/total)*100) + '%';
+
+      if (count > previousCounts[short]) {
+        bar.classList.remove('blink');
+        void bar.offsetWidth;
+        bar.classList.add('blink');
       }
+      previousCounts[short] = count;
     });
 
     drawPieChart(counts);
@@ -268,16 +277,15 @@
   async function fetchVotes() {
     try {
       const response = await fetch(votesUrl);
-      if (!response.ok) throw new Error('Network response was not ok');
-      const votes = await response.json();
-      updateBars(votes);
+      const data = await response.json();
+      updateBars(data);
     } catch (e) {
-      console.error('Fetch error:', e);
+      console.error("Vote fetch error", e);
     }
   }
 
   fetchVotes();
-  setInterval(fetchVotes, 10000);
+  setInterval(fetchVotes, 2000);
 </script>
 </body>
 </html>

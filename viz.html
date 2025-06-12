@@ -36,7 +36,26 @@
     </div>
 
     <!-- Pie Chart -->
-    <svg viewBox="0 0 200 200" class="pie-chart">
+    <svg viewBox="0 0 200 200" class="pie-chart" >
+      <defs>
+        <linearGradient id="grad-red" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#c0392b"/>
+          <stop offset="100%" stop-color="#e74c3c"/>
+        </linearGradient>
+        <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#2471a3"/>
+          <stop offset="100%" stop-color="#3498db"/>
+        </linearGradient>
+        <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#27ae60"/>
+          <stop offset="100%" stop-color="#2ecc71"/>
+        </linearGradient>
+        <linearGradient id="grad-yellow" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#d4ac0d"/>
+          <stop offset="100%" stop-color="#f1c40f"/>
+        </linearGradient>
+      </defs>
+
       <circle r="80" cx="100" cy="100" class="slice red" id="slice-red"></circle>
       <circle r="80" cx="100" cy="100" class="slice blue" id="slice-blue"></circle>
       <circle r="80" cx="100" cy="100" class="slice green" id="slice-green"></circle>

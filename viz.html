@@ -8,24 +8,39 @@
     body {
       font-family: sans-serif;
       background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 700px;
+      height: 700px;
+      box-sizing: border-box;
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     h1, h2 {
       text-align: center;
-      margin-bottom: 30px;
+      margin: 0;
     }
 
     .bar-wrapper {
       display: flex;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     .bar-container {
       flex: 1;
-      height: 30px;
-      background: #bbb;
+      height: 28px;
+      background: #ccc;
       border-radius: 4px;
       overflow: hidden;
       position: relative;
@@ -48,27 +63,27 @@
     }
 
     #bar-red {
-      background: linear-gradient(90deg, #992d22, #c0392b);
+      background: linear-gradient(90deg, #ff4e50, #ff7676);
     }
 
     #bar-blue {
-      background: linear-gradient(90deg, #1c3f70, #2c3e50);
+      background: linear-gradient(90deg, #4a90e2, #6bb9f0);
     }
 
     #bar-green {
-      background: linear-gradient(90deg, #145a32, #27ae60);
+      background: linear-gradient(90deg, #2ecc71, #58d68d);
     }
 
     #bar-yellow {
-      background: linear-gradient(90deg, #9a8600, #f39c12);
-      color: #fff;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+      background: linear-gradient(90deg, #f1c40f, #f9e79f);
+      color: #000;
+      text-shadow: none;
     }
 
     .count {
       position: absolute;
       right: 8px;
-      line-height: 30px;
+      line-height: 28px;
       font-weight: bold;
       color: #fff;
     }
@@ -81,11 +96,14 @@
     }
 
     #pie-container {
-      max-width: 400px;
-      margin: 50px auto;
+      width: 100%;
+      max-width: 100%;
+      height: 330px;
     }
 
     canvas {
+      width: 100% !important;
+      height: 100% !important;
       animation: fadeIn 1s ease;
     }
 
@@ -96,45 +114,49 @@
   </style>
 </head>
 <body>
-  <h1>Live Vote VIZZ</h1>
+  <div class="container">
+    <div>
+      <h1>Live Vote VIZZ</h1>
 
-  <!-- BAR CHARTS -->
-  <div class="bar-wrapper">
-    <div class="bar-container">
-      <div id="bar-red" class="bar">🇨🇦🇺🇸 CAN/U.S.</div>
-      <div id="count-red" class="count">0</div>
+      <div class="bar-wrapper">
+        <div class="bar-container">
+          <div id="bar-red" class="bar">🇨🇦🇺🇸 CAN/U.S.</div>
+          <div id="count-red" class="count">0</div>
+        </div>
+        <div id="percent-red" class="percentage">0%</div>
+      </div>
+
+      <div class="bar-wrapper">
+        <div class="bar-container">
+          <div id="bar-blue" class="bar">🇬🇧 UK</div>
+          <div id="count-blue" class="count">0</div>
+        </div>
+        <div id="percent-blue" class="percentage">0%</div>
+      </div>
+
+      <div class="bar-wrapper">
+        <div class="bar-container">
+          <div id="bar-green" class="bar">🇦🇺🇳🇿 AUS/NZ</div>
+          <div id="count-green" class="count">0</div>
+        </div>
+        <div id="percent-green" class="percentage">0%</div>
+      </div>
+
+      <div class="bar-wrapper">
+        <div class="bar-container">
+          <div id="bar-yellow" class="bar">🇪🇺 EURO</div>
+          <div id="count-yellow" class="count">0</div>
+        </div>
+        <div id="percent-yellow" class="percentage">0%</div>
+      </div>
     </div>
-    <div id="percent-red" class="percentage">0%</div>
-  </div>
 
-  <div class="bar-wrapper">
-    <div class="bar-container">
-      <div id="bar-blue" class="bar">🇬🇧 UK</div>
-      <div id="count-blue" class="count">0</div>
+    <div>
+      <h2>Vote Distribution</h2>
+      <div id="pie-container">
+        <canvas id="pieChart"></canvas>
+      </div>
     </div>
-    <div id="percent-blue" class="percentage">0%</div>
-  </div>
-
-  <div class="bar-wrapper">
-    <div class="bar-container">
-      <div id="bar-green" class="bar">🇦🇺🇳🇿 AUS/NZ</div>
-      <div id="count-green" class="count">0</div>
-    </div>
-    <div id="percent-green" class="percentage">0%</div>
-  </div>
-
-  <div class="bar-wrapper">
-    <div class="bar-container">
-      <div id="bar-yellow" class="bar">🇪🇺 EURO</div>
-      <div id="count-yellow" class="count">0</div>
-    </div>
-    <div id="percent-yellow" class="percentage">0%</div>
-  </div>
-
-  <!-- PIE CHART -->
-  <h2>Vote Distribution</h2>
-  <div id="pie-container">
-    <canvas id="pieChart" width="400" height="400"></canvas>
   </div>
 
   <script>
@@ -142,10 +164,10 @@
 
     const keys = ['votered', 'voteblue', 'votegreen', 'voteyellow'];
     const bars = {
-      red:   { label: '🇨🇦🇺🇸 CAN/U.S.', color: ['#992d22', '#c0392b'] },
-      blue:  { label: '🇬🇧 UK',         color: ['#1c3f70', '#2c3e50'] },
-      green: { label: '🇦🇺🇳🇿 AUS/NZ',   color: ['#145a32', '#27ae60'] },
-      yellow:{ label: '🇪🇺 EURO',       color: ['#9a8600', '#f39c12'] }
+      red:    { label: '🇨🇦🇺🇸 CAN/U.S.', color: ['#ff4e50', '#ff7676'] },
+      blue:   { label: '🇬🇧 UK',         color: ['#4a90e2', '#6bb9f0'] },
+      green:  { label: '🇦🇺🇳🇿 AUS/NZ',   color: ['#2ecc71', '#58d68d'] },
+      yellow: { label: '🇪🇺 EURO',       color: ['#f1c40f', '#f9e79f'] }
     };
 
     const canvas = document.getElementById('pieChart');
@@ -162,7 +184,7 @@
         ],
         datasets: [{
           data: [0, 0, 0, 0],
-          backgroundColor: [], // will be filled below
+          backgroundColor: [],
           borderColor: '#fff',
           borderWidth: 2
         }]
@@ -176,7 +198,7 @@
           legend: {
             position: 'bottom',
             labels: {
-              font: { size: 14 }
+              font: { size: 13 }
             }
           }
         }
@@ -221,15 +243,9 @@
         const count = votes[key] || 0;
         const percent = total > 0 ? Math.round((count / total) * 100) : 0;
 
-        const bar = document.getElementById('bar-' + short);
-        const countElem = document.getElementById('count-' + short);
-        const percentElem = document.getElementById('percent-' + short);
-
-        if (bar && countElem && percentElem) {
-          bar.style.width = (count / maxVotes) * 100 + '%';
-          countElem.textContent = count;
-          percentElem.textContent = percent + '%';
-        }
+        document.getElementById('bar-' + short).style.width = (count / maxVotes) * 100 + '%';
+        document.getElementById('count-' + short).textContent = count;
+        document.getElementById('percent-' + short).textContent = percent + '%';
       });
     }
 

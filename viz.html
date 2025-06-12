@@ -25,11 +25,11 @@
     .bar-container {
       flex: 1;
       height: 30px;
-      background: #ddd;
+      background: #bbb;
       border-radius: 4px;
       overflow: hidden;
       position: relative;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       display: flex;
       align-items: center;
     }
@@ -44,25 +44,25 @@
       font-weight: bold;
       white-space: nowrap;
       overflow: hidden;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
     }
 
     #bar-red {
-      background: linear-gradient(90deg, #ff6b6b, #e74c3c);
+      background: linear-gradient(90deg, #992d22, #c0392b);
     }
 
     #bar-blue {
-      background: linear-gradient(90deg, #74b9ff, #3498db);
+      background: linear-gradient(90deg, #1c3f70, #2c3e50);
     }
 
     #bar-green {
-      background: linear-gradient(90deg, #55efc4, #2ecc71);
+      background: linear-gradient(90deg, #145a32, #27ae60);
     }
 
     #bar-yellow {
-      background: linear-gradient(90deg, #ffeaa7, #f1c40f);
-      color: #000;
-      text-shadow: none;
+      background: linear-gradient(90deg, #9a8600, #f39c12);
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
     }
 
     .count {
@@ -70,7 +70,7 @@
       right: 8px;
       line-height: 30px;
       font-weight: bold;
-      color: #333;
+      color: #fff;
     }
 
     .percentage {
@@ -96,8 +96,7 @@
   </style>
 </head>
 <body>
-  <h1>Live Votes</h1>
-<p>Type !votered, !voteYellow, !voteBlue, !votegreen in chat!</p>
+  <h1>Live Vote VIZZ</h1>
 
   <!-- BAR CHARTS -->
   <div class="bar-wrapper">
@@ -135,7 +134,7 @@
   <!-- PIE CHART -->
   <h2>Vote Distribution</h2>
   <div id="pie-container">
-    <canvas id="pieChart"></canvas>
+    <canvas id="pieChart" width="400" height="400"></canvas>
   </div>
 
   <script>
@@ -143,13 +142,16 @@
 
     const keys = ['votered', 'voteblue', 'votegreen', 'voteyellow'];
     const bars = {
-      red: { label: '🇨🇦🇺🇸 CAN/U.S.', color: '#e74c3c' },
-      blue: { label: '🇬🇧 UK', color: '#3498db' },
-      green: { label: '🇦🇺🇳🇿 AUS/NZ', color: '#2ecc71' },
-      yellow: { label: '🇪🇺 EURO', color: '#f1c40f' }
+      red:   { label: '🇨🇦🇺🇸 CAN/U.S.', color: ['#992d22', '#c0392b'] },
+      blue:  { label: '🇬🇧 UK',         color: ['#1c3f70', '#2c3e50'] },
+      green: { label: '🇦🇺🇳🇿 AUS/NZ',   color: ['#145a32', '#27ae60'] },
+      yellow:{ label: '🇪🇺 EURO',       color: ['#9a8600', '#f39c12'] }
     };
 
-    const pieChart = new Chart(document.getElementById('pieChart'), {
+    const canvas = document.getElementById('pieChart');
+    const ctx = canvas.getContext('2d');
+
+    const pieChart = new Chart(ctx, {
       type: 'pie',
       data: {
         labels: [
@@ -160,12 +162,7 @@
         ],
         datasets: [{
           data: [0, 0, 0, 0],
-          backgroundColor: [
-            bars.red.color,
-            bars.blue.color,
-            bars.green.color,
-            bars.yellow.color
-          ],
+          backgroundColor: [], // will be filled below
           borderColor: '#fff',
           borderWidth: 2
         }]
@@ -183,7 +180,23 @@
             }
           }
         }
-      }
+      },
+      plugins: [{
+        id: 'gradientFills',
+        beforeDraw(chart) {
+          const {ctx, chartArea} = chart;
+          const gradients = Object.values(bars).map(bar => {
+            const grad = ctx.createRadialGradient(
+              chartArea.width / 2, chartArea.height / 2, 0,
+              chartArea.width / 2, chartArea.height / 2, chartArea.width / 2
+            );
+            grad.addColorStop(0, bar.color[0]);
+            grad.addColorStop(1, bar.color[1]);
+            return grad;
+          });
+          chart.data.datasets[0].backgroundColor = gradients;
+        }
+      }]
     });
 
     async function fetchVotes() {
@@ -204,7 +217,7 @@
       const maxVotes = Math.max(...counts, 1);
 
       keys.forEach((key, i) => {
-        const short = key.slice(4); // 'red', 'blue', etc
+        const short = key.slice(4);
         const count = votes[key] || 0;
         const percent = total > 0 ? Math.round((count / total) * 100) : 0;
 

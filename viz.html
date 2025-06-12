@@ -56,4 +56,104 @@
     }
 
     #bar-yellow {
-      background: linear-gradient(90deg, #ffeaa7,
+      background: linear-gradient(90deg, #ffeaa7, #f1c40f);
+    }
+
+    .count {
+      position: absolute;
+      right: 8px;
+      top: 0;
+      bottom: 0;
+      line-height: 24px;
+      font-weight: bold;
+      color: #333;
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
+    }
+
+    .percentage {
+      margin-left: 10px;
+      min-width: 50px;
+      text-align: right;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Live Vote VIZZ</h1>
+
+  <div class="bar-wrapper">
+    <div class="label">🇨🇦🇺🇸 CAN/U.S.</div>
+    <div class="bar-container">
+      <div id="bar-red" class="bar"></div>
+      <div id="count-red" class="count">0</div>
+    </div>
+    <div id="percent-red" class="percentage">0%</div>
+  </div>
+
+  <div class="bar-wrapper">
+    <div class="label">🇬🇧 UK</div>
+    <div class="bar-container">
+      <div id="bar-blue" class="bar"></div>
+      <div id="count-blue" class="count">0</div>
+    </div>
+    <div id="percent-blue" class="percentage">0%</div>
+  </div>
+
+  <div class="bar-wrapper">
+    <div class="label">🇦🇺🇳🇿 AUS/NZ</div>
+    <div class="bar-container">
+      <div id="bar-green" class="bar"></div>
+      <div id="count-green" class="count">0</div>
+    </div>
+    <div id="percent-green" class="percentage">0%</div>
+  </div>
+
+  <div class="bar-wrapper">
+    <div class="label">🇪🇺 EURO</div>
+    <div class="bar-container">
+      <div id="bar-yellow" class="bar"></div>
+      <div id="count-yellow" class="count">0</div>
+    </div>
+    <div id="percent-yellow" class="percentage">0%</div>
+  </div>
+
+  <script>
+    const votesUrl = 'https://script.google.com/macros/s/AKfycbzv5LQFZ2Dj2x4OMQZr1o20acXoN4DCy8Vez7oxc1A8T0hCGBK5EqHusXWxq7yIgY21Pw/exec';
+
+    async function fetchVotes() {
+      try {
+        const response = await fetch(votesUrl);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const votes = await response.json();
+        updateBars(votes);
+      } catch (error) {
+        console.error('Error fetching votes:', error);
+      }
+    }
+
+    function updateBars(votes) {
+      const keys = ['votered', 'voteblue', 'votegreen', 'voteyellow'];
+      const counts = keys.map(k => votes[k] || 0);
+      const total = counts.reduce((sum, val) => sum + val, 0);
+      const maxVotes = Math.max(...counts, 1);
+
+      keys.forEach((key, i) => {
+        const short = key.slice(4); // red, blue, etc
+        const count = votes[key] || 0;
+        const bar = document.getElementById('bar-' + short);
+        const countElem = document.getElementById('count-' + short);
+        const percentElem = document.getElementById('percent-' + short);
+        if (bar && countElem && percentElem) {
+          const percent = total > 0 ? Math.round((count / total) * 100) : 0;
+          bar.style.width = (count / maxVotes) * 100 + '%';
+          countElem.textContent = count;
+          percentElem.textContent = percent + '%';
+        }
+      });
+    }
+
+    fetchVotes();
+    setInterval(fetchVotes, 10000);
+  </script>
+</body>
+</html>

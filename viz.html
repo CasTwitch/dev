@@ -1,9 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Vote Visualisation</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<title>Vote Visualisation</title>
+<style>
+  /* Reset body margin and height */
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: transparent;
+  }
+
+  /* Container 1000x300 fixed */
+  .container-horizontal {
+    width: 1000px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    background: transparent;
+    font-family: Arial, sans-serif;
+    color: white;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Pie chart styles */
+  .pie-chart {
+    width: 200px;
+    height: 200px;
+    transform: rotate(-90deg);
+  }
+
+  /* Circle slices with gradient fills */
+  .slice {
+    fill: none;
+    stroke-width: 40;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.8s ease, stroke-dashoffset 0.8s ease;
+  }
+
+  .red { stroke: url(#grad-red); }
+  .blue { stroke: url(#grad-blue); }
+  .green { stroke: url(#grad-green); }
+  .yellow { stroke: url(#grad-yellow); }
+
+  /* Bars wrapper */
+  .bars-wrapper {
+    flex: 1;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Heading */
+  .bars-wrapper h1 {
+    margin: 0 0 12px 0;
+    color: white;
+    user-select: none;
+  }
+
+  /* Bar container spacing max 10px vertical */
+  .bar-container {
+    margin: 0 0 10px 0;
+    width: 100%;
+    height: 30px;
+    background: transparent;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Bar styling */
+  .bar {
+    height: 100%;
+    width: 0;
+    border: 2px solid white;
+    border-radius: 5px;
+    position: relative;
+    box-sizing: border-box;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    user-select: none;
+    transition: width 1s ease;
+  }
+
+  /* Blink animation */
+  @keyframes blinkAnim {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .blink {
+    animation: blinkAnim 1s ease;
+  }
+
+  /* Bar colors with gradients */
+  .red {
+    background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%);
+  }
+
+  .blue {
+    background: linear-gradient(90deg, #3498db 0%, #2471a3 100%);
+  }
+
+  .green {
+    background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+  }
+
+  .yellow {
+    background: linear-gradient(90deg, #f1c40f 0%, #d4ac0d 100%);
+  }
+
+  /* Labels & counts */
+  .label {
+    white-space: nowrap;
+  }
+
+  .count {
+    white-space: nowrap;
+  }
+</style>
 </head>
 <body>
   <div class="container-horizontal">
@@ -63,51 +186,51 @@
     </div>
   </div>
 
-  <script>
-    const votesUrl = 'https://script.google.com/macros/s/AKfycbzv5LQFZ2Dj2x4OMQZr1o20acXoN4DCy8Vez7oxc1A8T0hCGBK5EqHusXWxq7yIgY21Pw/exec';
+<script>
+  const votesUrl = 'https://script.google.com/macros/s/AKfycbzv5LQFZ2Dj2x4OMQZr1o20acXoN4DCy8Vez7oxc1A8T0hCGBK5EqHusXWxq7yIgY21Pw/exec';
 
-    async function fetchVotes() {
-      try {
-        const response = await fetch(votesUrl);
-        const votes = await response.json();
-        updateVisuals(votes);
-      } catch (err) {
-        console.error('Vote fetch failed:', err);
+  async function fetchVotes() {
+    try {
+      const response = await fetch(votesUrl);
+      const votes = await response.json();
+      updateVisuals(votes);
+    } catch (err) {
+      console.error('Vote fetch failed:', err);
+    }
+  }
+
+  function updateVisuals(votes) {
+    const keys = ['votered', 'voteblue', 'votegreen', 'voteyellow'];
+    const total = keys.reduce((sum, k) => sum + (votes[k] || 0), 0) || 1;
+    let offset = 0;
+
+    keys.forEach((key) => {
+      const count = votes[key] || 0;
+      const id = key.slice(4);
+      const percent = Math.round((count / total) * 100);
+      const bar = document.getElementById(`bar-${id}`);
+      const countEl = document.getElementById(`count-${id}`);
+      const slice = document.getElementById(`slice-${id}`);
+
+      const width = percent + '%';
+      if (bar.style.width !== width) {
+        bar.classList.remove('blink');
+        void bar.offsetWidth;
+        bar.classList.add('blink');
       }
-    }
 
-    function updateVisuals(votes) {
-      const keys = ['votered', 'voteblue', 'votegreen', 'voteyellow'];
-      const total = keys.reduce((sum, k) => sum + (votes[k] || 0), 0) || 1;
-      let offset = 0;
+      bar.style.width = width;
+      countEl.textContent = percent + '%';
 
-      keys.forEach((key) => {
-        const count = votes[key] || 0;
-        const id = key.slice(4);
-        const percent = Math.round((count / total) * 100);
-        const bar = document.getElementById(`bar-${id}`);
-        const countEl = document.getElementById(`count-${id}`);
-        const slice = document.getElementById(`slice-${id}`);
+      const dash = (percent / 100) * 502;
+      slice.setAttribute('stroke-dasharray', `${dash} ${502 - dash}`);
+      slice.setAttribute('stroke-dashoffset', -offset);
+      offset += dash;
+    });
+  }
 
-        const width = percent + '%';
-        if (bar.style.width !== width) {
-          bar.classList.remove('blink');
-          void bar.offsetWidth;
-          bar.classList.add('blink');
-        }
-
-        bar.style.width = width;
-        countEl.textContent = percent + '%';
-
-        const dash = (percent / 100) * 502;
-        slice.setAttribute('stroke-dasharray', `${dash} ${502 - dash}`);
-        slice.setAttribute('stroke-dashoffset', -offset);
-        offset += dash;
-      });
-    }
-
-    fetchVotes();
-    setInterval(fetchVotes, 10000);
-  </script>
+  fetchVotes();
+  setInterval(fetchVotes, 10000);
+</script>
 </body>
 </html>
